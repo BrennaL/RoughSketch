@@ -1,2 +1,6 @@
 .DS_Store
+markers-for-android/gen/
+.idea
+out
+markers-for-android/markers-for-android.iml
 
