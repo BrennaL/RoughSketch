@@ -248,7 +248,7 @@ public class MarkersActivity extends Activity
         }
 			
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
-        root.addView(mSlate, 0);
+        root.addView(mSlate, 1);
         mZoomView = new ZoomTouchView(this);
         mZoomView.setSlate(mSlate);
         mZoomView.setEnabled(false);
