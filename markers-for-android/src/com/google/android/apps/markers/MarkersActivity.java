@@ -64,13 +64,27 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import nxr.tpad.lib.TPad;
+import nxr.tpad.lib.TPadImpl;
+import nxr.tpad.lib.views.DepthMapView;
+import nxr.tpad.lib.views.FrictionMapView;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+
+
 import org.dsandler.apps.markers.R;
 
 import com.google.android.apps.markers.ToolButton.SwatchButton;
 
 public class MarkersActivity extends Activity
 {
-    final static int LOAD_IMAGE = 1000;
+   //
+	FrictionMapView fricView;
+	TPad mTpad;
+	//
+	final static int LOAD_IMAGE = 1000;
 
     private static final String TAG = "Markers";
     private static final boolean DEBUG = true;
@@ -222,6 +236,18 @@ public class MarkersActivity extends Activity
                 mJustLoadedImage = false;
             }
         }
+		
+		// Set the content of the screen to the .xml file that is in the layout folder
+		//setContentView(R.layout.activity_hello_tpad);
+		mTpad = new TPadImpl(this);
+		fricView = (FrictionMapView) findViewById(R.id.view1);
+		fricView.setTpad(mTpad);
+		Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.filter);
+		fricView.setDataBitmap(defaultBitmap);
+		defaultBitmap.recycle();			
+		fricView.setDisplayShowing(false);
+        
+        
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
         root.addView(mSlate, 0);
         mZoomView = new ZoomTouchView(this);
