@@ -224,21 +224,13 @@ public class MarkersActivity extends Activity
         win.requestFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.main);
-		//setContentView(R.layout.activity_hello_tpad);
-    	// TODO//
-    	        nTpad = new TPadImpl(this);
-    			frictView = (FrictionMapView) findViewById(R.id.view1);
-    			frictView.setTpad(nTpad);
-    			Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.filter);
-    			frictView.setDataBitmap(defaultBitmap);
-    			defaultBitmap.recycle();			
-    			frictView.setDisplayShowing(false);  
-    			
-    	//
+
         mSlate = (Slate) getLastNonConfigurationInstance();
         if (mSlate == null) {
+        	nTpad = new TPadImpl(this);
         	mSlate = new Slate(this);
 
+        	mSlate.setTpad(nTpad);
         	// Load the old buffer if necessary
             if (!mJustLoadedImage) {
                 loadDrawing(WIP_FILENAME, true);
@@ -248,14 +240,30 @@ public class MarkersActivity extends Activity
         }
 			
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
-        root.addView(mSlate, 1);
+        root.addView(mSlate, 0);
         mZoomView = new ZoomTouchView(this);
         mZoomView.setSlate(mSlate);
         mZoomView.setEnabled(false);
+        
         if (hasAnimations()) {
             mZoomView.setAlpha(0);
         }
+        
         root.addView(mZoomView, 0);
+        
+//		//setContentView(R.layout.activity_hello_tpad);
+//    	// TODO//
+//    	        nTpad = new TPadImpl(this);
+//    			frictView = (FrictionMapView) findViewById(R.id.view1);
+//    			frictView.setTpad(nTpad);
+//    			Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.filter);
+//    			frictView.setDataBitmap(defaultBitmap); 
+//    			defaultBitmap.recycle();			 
+//    			frictView.setDisplayShowing(true);  
+//    			
+//    	//
+        
+        
         
         mMediaScannerConnection =
                 new MediaScannerConnection(MarkersActivity.this, mMediaScannerClient); 
