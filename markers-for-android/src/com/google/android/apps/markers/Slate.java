@@ -125,8 +125,11 @@ public class Slate extends View {
     private int mMemClass;
     private boolean mLowMem;
     
+    // TPad globals
     private TPad mTpad;
-
+    private float gestureTracker = 1.0f;
+    private float gestureIncrement = 0.03f;
+    
     public interface SlateListener {
         void strokeStarted();
         void strokeEnded();
@@ -921,9 +924,6 @@ public class Slate extends View {
 
         mEmpty = false;
         
-        //TODO: Change this to send 'smarter' friction levels
-        mTpad.sendFriction(0.5f);
-
         // starting a new touch? commit the previous state of the canvas
         if (action == MotionEvent.ACTION_DOWN) {
             commitStroke();
@@ -1011,10 +1011,68 @@ public class Slate extends View {
             }
             dbgX = dbgY = -1;
         }
+        // Call the TPad after all drawing has been calculated
+        onTouchEventTPad(event);
         return true;
     }
+    /**
+     * Handles touch events for the TPad separate from the motion event.
+     * @author : bucci
+     * @param  : MotionEvent event   
+     */
+    public boolean onTouchEventTPad(MotionEvent event) {
+    	// Values from 0.0f-1.0f are 0-100% tPad activation
+    	switch (event.getAction()) {
+    		case MotionEvent.ACTION_DOWN:
+    			//start motion
+    			startGesture();
+    			break;
+    		case MotionEvent.ACTION_MOVE:
+    			//continue motion
+    			continueGesture();
+    			break;
+    		case MotionEvent.ACTION_UP:
+    			//end motion
+    			endGesture();
+    			break;
+    		default:
+    			// send half friction
+    			mTpad.sendFriction(0.5f);
+    	}
+        return true;
+    }
+    
+    /**
+     * Starts a texture gesture cycle by setting friction to 0.
+     * @author bucci
+     */
+    private int count;
+	private void startGesture() {
+		this.count = 0;
+		this.gestureTracker = 1.0f;
+		mTpad.sendFriction(this.gestureTracker);
+	}
+	/**
+     * Continues a texture gesture cycle by incrementing friction.
+     * @author bucci
+     */
+	private void continueGesture() {
+		this.count++;
+		if (this.gestureTracker > this.gestureIncrement) {
+			this.gestureTracker -= this.gestureIncrement;
+			mTpad.sendFriction(this.gestureTracker);
+		}
+		Log.w("Friction debug", "Number of times this is called: " + count);
+	}
+	/**
+     * Ends a texture gesture cycle.
+     * @author bucci
+     */
+    private void endGesture() {
+    	Log.w("Friction debug", "End of gesture setting: " + this.gestureTracker);
+	}
 
-    public static float lerp(float a, float b, float f) {
+	public static float lerp(float a, float b, float f) {
         return a + f * (b - a);
     }
 
