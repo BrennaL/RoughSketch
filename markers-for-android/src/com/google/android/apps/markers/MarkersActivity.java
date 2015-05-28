@@ -64,13 +64,26 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import nxr.tpad.lib.TPad;
+import nxr.tpad.lib.TPadImpl;
+import nxr.tpad.lib.views.DepthMapView;
+import nxr.tpad.lib.views.FrictionMapView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+
+
 import org.dsandler.apps.markers.R;
 
 import com.google.android.apps.markers.ToolButton.SwatchButton;
 
 public class MarkersActivity extends Activity
 {
-    final static int LOAD_IMAGE = 1000;
+   //
+	FrictionMapView frictView;
+	TPad nTpad;
+	//
+	final static int LOAD_IMAGE = 1000;
 
     private static final String TAG = "Markers";
     private static final boolean DEBUG = true;
@@ -211,10 +224,13 @@ public class MarkersActivity extends Activity
         win.requestFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.main);
+
         mSlate = (Slate) getLastNonConfigurationInstance();
         if (mSlate == null) {
+        	nTpad = new TPadImpl(this);
         	mSlate = new Slate(this);
 
+        	mSlate.setTpad(nTpad);
         	// Load the old buffer if necessary
             if (!mJustLoadedImage) {
                 loadDrawing(WIP_FILENAME, true);
@@ -222,15 +238,32 @@ public class MarkersActivity extends Activity
                 mJustLoadedImage = false;
             }
         }
+			
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
         root.addView(mSlate, 0);
         mZoomView = new ZoomTouchView(this);
         mZoomView.setSlate(mSlate);
         mZoomView.setEnabled(false);
+        
         if (hasAnimations()) {
             mZoomView.setAlpha(0);
         }
+        
         root.addView(mZoomView, 0);
+        
+//		//setContentView(R.layout.activity_hello_tpad);
+//    	// TODO//
+//    	        nTpad = new TPadImpl(this);
+//    			frictView = (FrictionMapView) findViewById(R.id.view1);
+//    			frictView.setTpad(nTpad);
+//    			Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.filter);
+//    			frictView.setDataBitmap(defaultBitmap); 
+//    			defaultBitmap.recycle();			 
+//    			frictView.setDisplayShowing(true);  
+//    			
+//    	//
+        
+        
         
         mMediaScannerConnection =
                 new MediaScannerConnection(MarkersActivity.this, mMediaScannerClient); 
@@ -396,6 +429,8 @@ public class MarkersActivity extends Activity
         mActivePenType.click();
 
         // clickDebug(null); // auto-debug mode for testing devices
+		// Set the content of the screen to the .xml file that is in the layout folder
+
     }
 
     private void loadSettings() {

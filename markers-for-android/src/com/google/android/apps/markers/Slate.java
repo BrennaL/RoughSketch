@@ -45,6 +45,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import nxr.tpad.lib.TPad;
 
 import org.dsandler.apps.markers.R;
 
@@ -123,6 +124,8 @@ public class Slate extends View {
     private float mPanX = 0f, mPanY = 0f;
     private int mMemClass;
     private boolean mLowMem;
+    
+    private TPad mTpad;
 
     public interface SlateListener {
         void strokeStarted();
@@ -917,6 +920,9 @@ public class Slate extends View {
         long time = event.getEventTime();
 
         mEmpty = false;
+        
+        //TODO: Change this to send 'smarter' friction levels
+        mTpad.sendFriction(0.5f);
 
         // starting a new touch? commit the previous state of the canvas
         if (action == MotionEvent.ACTION_DOWN) {
@@ -1045,4 +1051,16 @@ public class Slate extends View {
     public float getDrawingDensity() {
         return (float) DENSITY;
     }
+    
+    // BEGIN MERGE OF FrictionMapView FILE: 
+	// Called by creating activity to initialize the local TPad reference object
+	public void setTpad(TPad tpad) {
+		try {
+			tpad.toString();
+		} catch (NullPointerException ex) {
+			Log.w("FrictionMapView", "Warning: This view is being passed a null tpad! Expect no friction!");
+			ex.printStackTrace();
+		}
+		mTpad = tpad;
+	}
 }
