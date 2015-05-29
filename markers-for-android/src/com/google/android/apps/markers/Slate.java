@@ -1080,24 +1080,7 @@ public class Slate extends View {
      */
 	
     public boolean onTouchEventTPad(MotionEvent event) {
-    	// Values from 0.0f-1.0f are 0-100% tPad activation
-    	switch (event.getAction()) {
-    		case MotionEvent.ACTION_DOWN:
-    			//start motion
-    			sampler.startGesture(event);
-    			break;
-    		case MotionEvent.ACTION_MOVE:
-    			//continue motion
-    			sampler.continueGesture(event);
-    			break;
-    		case MotionEvent.ACTION_UP:
-    			//end motion
-    			sampler.endGesture(event);
-    			break;
-    		default:
-    			// send half friction
-    			sampler.defaultGesture(event);
-    	}
+    	sampler.handleEvent(event);
         return true;
     }    
 }

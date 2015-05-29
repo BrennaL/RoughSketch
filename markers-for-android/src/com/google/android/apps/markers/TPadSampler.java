@@ -14,22 +14,32 @@ public class TPadSampler {
 	private TPad tPad;
 	private View view;
 	private Brush currentBrush;
-
+	
 	public TPadSampler(TPad tPad, View view) {
 		this.tPad = tPad;
 		this.view = view;
 	}
-	public void startGesture(MotionEvent event) {
-		tPad.sendFriction(currentBrush.startGesture(event));
-	}
-	public void continueGesture(MotionEvent event) {
-		tPad.sendFriction(currentBrush.endGesture(event));
-	}
-	public void endGesture(MotionEvent event) {
-		tPad.sendFriction(currentBrush.continueGesture(event));
-	}
-	public void defaultGesture(MotionEvent event) {
-		tPad.sendFriction(currentBrush.defaultFriction());
+	public void handleEvent(MotionEvent event) {
+		// Values from 0.0f-1.0f are 0-100% tPad activation
+		float frictionLevel; 
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				//start motion
+				frictionLevel = currentBrush.startGesture(event);
+				break;
+			case MotionEvent.ACTION_MOVE:
+				//continue motion
+				frictionLevel = currentBrush.continueGesture(event);
+				break;
+			case MotionEvent.ACTION_UP:
+				//end motion
+				frictionLevel = currentBrush.endGesture(event);
+				break;
+			default:
+				// send half friction
+				frictionLevel = currentBrush.defaultFriction();
+		}
+		tPad.sendFriction(frictionLevel);
 	}
 	
 	/**
