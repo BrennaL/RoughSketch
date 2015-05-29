@@ -127,9 +127,8 @@ public class Slate extends View {
     
     // TPad globals
     private TPad mTpad;
-    private float gestureTracker = 1.0f;
-    private float gestureIncrement = 0.03f;
-    
+	private TPadSampler sampler;
+
     public interface SlateListener {
         void strokeStarted();
         void strokeEnded();
@@ -420,13 +419,15 @@ public class Slate extends View {
     
     private static Paint sBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG);
     
-    public Slate(Context c, AttributeSet as) {
+    public Slate(Context c, AttributeSet as, TPad t) {
         super(c, as);
+        setTpad(t);
         init();
     }
     
-    public Slate(Context c) {
+    public Slate(Context c, TPad t) {
     	super(c);
+    	setTpad(t);
     	init();
     }
 
@@ -434,7 +435,7 @@ public class Slate extends View {
     private void init() {
 //        setWillNotCacheDrawing(true);
 //        setDrawingCacheEnabled(false);
-        
+    	
         mEmpty = true;
 
         // setup brush bitmaps
@@ -508,6 +509,7 @@ public class Slate extends View {
             mDebugPaints[4].setStyle(Paint.Style.FILL);
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
+        this.sampler = new TPadSampler(mTpad, this);
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -1015,62 +1017,7 @@ public class Slate extends View {
         onTouchEventTPad(event);
         return true;
     }
-    /**
-     * Handles touch events for the TPad separate from the motion event.
-     * @author : bucci
-     * @param  : MotionEvent event   
-     */
-    public boolean onTouchEventTPad(MotionEvent event) {
-    	// Values from 0.0f-1.0f are 0-100% tPad activation
-    	switch (event.getAction()) {
-    		case MotionEvent.ACTION_DOWN:
-    			//start motion
-    			startGesture();
-    			break;
-    		case MotionEvent.ACTION_MOVE:
-    			//continue motion
-    			continueGesture();
-    			break;
-    		case MotionEvent.ACTION_UP:
-    			//end motion
-    			endGesture();
-    			break;
-    		default:
-    			// send half friction
-    			mTpad.sendFriction(0.5f);
-    	}
-        return true;
-    }
-    
-    /**
-     * Starts a texture gesture cycle by setting friction to 0.
-     * @author bucci
-     */
-    private int count;
-	private void startGesture() {
-		this.count = 0;
-		this.gestureTracker = 1.0f;
-		mTpad.sendFriction(this.gestureTracker);
-	}
-	/**
-     * Continues a texture gesture cycle by incrementing friction.
-     * @author bucci
-     */
-	private void continueGesture() {
-		this.count++;
-		if (this.gestureTracker > this.gestureIncrement) {
-			this.gestureTracker -= this.gestureIncrement;
-			mTpad.sendFriction(this.gestureTracker);
-		}
-		Log.w("Friction debug", "Number of times this is called: " + count);
-	}
-	/**
-     * Ends a texture gesture cycle.
-     * @author bucci
-     */
-    private void endGesture() {
-    	Log.w("Friction debug", "End of gesture setting: " + this.gestureTracker);
-	}
+  
 
 	public static float lerp(float a, float b, float f) {
         return a + f * (b - a);
@@ -1110,6 +1057,10 @@ public class Slate extends View {
         return (float) DENSITY;
     }
     
+	//-----------------------------------------------------------------------------------------
+	// TPad stuff
+	//-----------------------------------------------------------------------------------------
+
     // BEGIN MERGE OF FrictionMapView FILE: 
 	// Called by creating activity to initialize the local TPad reference object
 	public void setTpad(TPad tpad) {
@@ -1119,6 +1070,34 @@ public class Slate extends View {
 			Log.w("FrictionMapView", "Warning: This view is being passed a null tpad! Expect no friction!");
 			ex.printStackTrace();
 		}
-		mTpad = tpad;
+		this.mTpad = tpad;
 	}
+		
+	 /**
+     * Handles touch events for the TPad separate from the motion event.
+     * @author : bucci
+     * @param  : MotionEvent event   
+     */
+	
+    public boolean onTouchEventTPad(MotionEvent event) {
+    	// Values from 0.0f-1.0f are 0-100% tPad activation
+    	switch (event.getAction()) {
+    		case MotionEvent.ACTION_DOWN:
+    			//start motion
+    			sampler.startGesture(event);
+    			break;
+    		case MotionEvent.ACTION_MOVE:
+    			//continue motion
+    			sampler.continueGesture(event);
+    			break;
+    		case MotionEvent.ACTION_UP:
+    			//end motion
+    			sampler.endGesture(event);
+    			break;
+    		default:
+    			// send half friction
+    			sampler.defaultGesture(event);
+    	}
+        return true;
+    }    
 }
