@@ -40,15 +40,15 @@ At the moment, I've left g(e) as a static function, therefore it's possible to c
 Copy from DefaultBrush and change:
 
 ```
-		// Brush settings
-		super.gestureLength = YOUR_N;
-		setDataBitmap(R.drawable.YOUR_TEXTURE);
+// Brush settings
+super.gestureLength = YOUR_N;
+setDataBitmap(R.drawable.YOUR_TEXTURE);
 ```
 
 and
 
 ```
-  private float g(int min, int max, int i) { YOUR_FUNCTION };
+private float g(int min, int max, int i) { YOUR_FUNCTION };
 ```
 
 To add an image to R.drawable, just drop any {jpg,png,bmp...} into res/drawable and do a clean rebuild. Be careful, though, don't rebuild everything in the workspace! It deleted all of my jar files when I did that.
