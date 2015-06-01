@@ -127,7 +127,7 @@ public class Slate extends View {
     
     // TPad globals
     private TPad mTpad;
-	private TPadSampler sampler;
+	private TPadBrushHandler sampler;
 
     public interface SlateListener {
         void strokeStarted();
@@ -509,7 +509,7 @@ public class Slate extends View {
             mDebugPaints[4].setStyle(Paint.Style.FILL);
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
-        this.sampler = new TPadSampler(mTpad, this);
+        this.sampler = new TPadBrushHandler(mTpad, this);
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -1080,7 +1080,12 @@ public class Slate extends View {
      */
 	
     public boolean onTouchEventTPad(MotionEvent event) {
-    	sampler.handleEvent(event);
+    	try {
+	    	sampler.handleEvent(event);
+    	}
+    	catch (Exception e) {
+    		Log.d("FDebug", "motionEvent failed");
+    	}
         return true;
     }    
 }

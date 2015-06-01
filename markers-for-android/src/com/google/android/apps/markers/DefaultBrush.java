@@ -1,27 +1,46 @@
 package com.google.android.apps.markers;
 
-import android.view.MotionEvent;
+import org.dsandler.apps.markers.R;
+import android.content.res.Resources;
+import android.util.Log;
 
 public class DefaultBrush extends Brush {
-    private float gestureIncrement = 0.03f;
-    
-	public float startGesture(MotionEvent event) {
-		setFrictionValue(1.0f);
-		return super.getFrictionValue();
-	}
 	
-	public float continueGesture(MotionEvent event) {
-		if (super.frictionValue > this.gestureIncrement) {
-			setFrictionValue(super.frictionValue - this.gestureIncrement);
+	public DefaultBrush(Resources resources) {
+		super(resources);
+
+		// Brush settings
+		
+		// Length in number of event calls of a brush gesture 
+		super.gestureLength = 125;
+		// Initialize the weight array to the length of a brush gesture
+		super.gestureWeights = new float[gestureLength];
+		// Apply the g(x) function, where x is events since beginning of gesture
+		this.generateWeights();
+		// The texture of the brush 
+		setDataBitmap(R.drawable.lines);
+	}
+	/**
+	 * Weight generating function.
+	 */
+	@Override
+	protected void generateWeights() {
+		for (int i=0; i<super.gestureLength; i++) {
+			super.gestureWeights[i] = g(0,gestureLength,i);
 		}
-		return super.getFrictionValue();
+		Log.d("FDebug", "Generated default weights: ");
+		System.out.println("Hi!");
+		for (int i=0; i<gestureWeights.length;i++) {
+			 Log.d("Fdebug", "gestureWeights[" + i + "] = " + gestureWeights[i]);
+		}
 	}
-	
-    public float endGesture(MotionEvent event) {
-    	return super.getFrictionValue();
-	}
-    
-    public float defaultFriction() {
-    	return super.getFrictionValue();
+	/**
+	 * Weight function, g(x). This should be where your weighting logic goes.
+	 */
+	private float g(int min, int max, int i) {
+		// Change this logic to define a new function.
+		int range = max - min;
+		float ret = ((float) i) / ((float) range);  
+		return ret;
 	}
 }
