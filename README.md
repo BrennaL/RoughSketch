@@ -21,7 +21,34 @@ For convenience sake, I've tried to seperate the prediction algorithm from what 
 • Brush : an abstract class for all brushes.
 • DefaultBrush : A concrete class for a single brush.
 
-I've made it so that you only need to change one parameter and one function to get different brush behaviours (but I'm happy to change this if we need to). Each new Brush should have it's own *texture* and set of *weights*. The texture is like the 
---- MORE SOON!
+I've made it so that you only need to change one parameter and one function to get different brush behaviours (but I'm happy to change this if we need to). Each new Brush should have it's own *texture* and set of *weights*. 
 
+Let's call any pixel on the texture *I[x][y]*. Let's call the weighting function *g(e)*, where *e* is the number of move events since the beginning of the gesture. Then friction at any point along the gesture will be *g(e)•I[x][y]*. Note that e >= 0, 0 <= g(e) <= 1. 
 
+Each gesture needs a *length*. This should be the number of events it takes to complete the gesture.
+
+```
+start -> move -> move -> move -> move -> stop
+```
+
+The prediction algorithm works by predicting where your finger is going based on velocity and direction. It can therefore precompute along a trajectory, saving the values in the *predictedPixels* array, which has a prediction horizon (length) dynamically determined at runtime (but is really about 125).
+
+At the moment, I've left g(e) as a static function, therefore it's possible to calculate g(e) in advance. The predicton algorithm therefore takes {g[e + 0]•I[x_0][y_0],g[e + 1]•I[x_1][y_1] ... g[e + n]•I[x_n][y_n]} as the predicted pixel array.
+
+## What you need to do to define your own Brush
+
+Copy from DefaultBrush and change:
+
+```
+		// Brush settings
+		super.gestureLength = YOUR_N;
+		setDataBitmap(R.drawable.YOUR_TEXTURE);
+```
+
+and
+
+```
+  private float g(int min, int max, int i) { YOUR_FUNCTION };
+```
+
+To add an image to R.drawable, just drop any {jpg,png,bmp...} into res/drawable and do a clean rebuild. Be careful, though, don't rebuild everything in the workspace! It deleted all of my jar files when I did that.
