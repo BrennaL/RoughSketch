@@ -37,7 +37,7 @@ At the moment, I've left g(e) as a static function, therefore it's possible to c
 
 ## What you need to do to define your own Brush
 
-Copy from DefaultBrush and change:
+Make a new class that extends Brush, copy from DefaultBrush if you want, and change:
 
 ```
 // Brush settings
