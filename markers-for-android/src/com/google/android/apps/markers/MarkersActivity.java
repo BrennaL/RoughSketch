@@ -81,7 +81,7 @@ public class MarkersActivity extends Activity
 {
    //
 	FrictionMapView frictView;
-	TPad nTpad;
+	TPad mTpad;
 	//
 	final static int LOAD_IMAGE = 1000;
 
@@ -225,10 +225,11 @@ public class MarkersActivity extends Activity
 
         setContentView(R.layout.main);
 
+        mTpad = new TPadImpl(this);
+
         mSlate = (Slate) getLastNonConfigurationInstance();
         if (mSlate == null) {
-        	nTpad = new TPadImpl(this);
-        	mSlate = new Slate(this, nTpad);
+        	mSlate = new Slate(this, mTpad);
         	// Load the old buffer if necessary
             if (!mJustLoadedImage) {
                 loadDrawing(WIP_FILENAME, true);
@@ -239,7 +240,7 @@ public class MarkersActivity extends Activity
 			
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
         root.addView(mSlate, 0);
-        mZoomView = new ZoomTouchView(this);
+        mZoomView = new ZoomTouchView(this, mTpad);
         mZoomView.setSlate(mSlate);
         mZoomView.setEnabled(false);
         

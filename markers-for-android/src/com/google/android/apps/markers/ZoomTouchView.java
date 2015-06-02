@@ -23,9 +23,12 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import nxr.tpad.lib.TPad;
 
 public class ZoomTouchView extends View {
     public static final String TAG = Slate.TAG;
@@ -47,17 +50,24 @@ public class ZoomTouchView extends View {
     private Matrix mInitialZoomMatrix = new Matrix();
     private Paint mZoomPaint;
 
-    public ZoomTouchView(Context context) {
-        this(context, null);
+    //TPad members
+    private TPad mTpad;
+    private TPadZoomTouchHandler tPadZoomTouch;
+
+
+    public ZoomTouchView(Context context, TPad mTpad) {
+        this(context, null, mTpad);
     }
 
-    public ZoomTouchView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    public ZoomTouchView(Context context, AttributeSet attrs, TPad mTpad) {
+        this(context, attrs, 0, mTpad);
     }
 
-    public ZoomTouchView(Context context, AttributeSet attrs, int defStyle) {
+    public ZoomTouchView(Context context, AttributeSet attrs, int defStyle, TPad mTpad) {
         super(context, attrs, defStyle);
-        
+
+        setTpad(mTpad);
+
         mZoomPaint = new Paint();
         mZoomPaint.setTextSize(25f);
     }
@@ -177,6 +187,8 @@ public class ZoomTouchView extends View {
                     mTouchTime = 0; // no double tap now
                 }
             }
+            //handleTPad
+            onZoomEventTPad(event);
             if (DEBUG_OVERLAY) invalidate();
             return true;
         }
@@ -224,5 +236,37 @@ public class ZoomTouchView extends View {
         pt.setColor(0x80FF0000);
         if (mTouchPoint[0] != 0)
         canvas.drawCircle(mTouchPoint[0], mTouchPoint[1], 50 * (float) mSlate.getScaleX(), pt);
+    }
+
+
+    //TPad Methods
+
+    // BEGIN MERGE OF FrictionMapView FILE:
+    // Called by creating activity to initialize the local TPad reference object
+    public void setTpad(TPad tpad) {
+        try {
+            tpad.toString();
+        } catch (NullPointerException ex) {
+            Log.w("FrictionMapView", "Warning: This view is being passed a null tpad! Expect no friction!");
+            ex.printStackTrace();
+        }
+        this.mTpad = tpad;
+        this.tPadZoomTouch = new TPadZoomTouchHandler(mTpad, this);
+    }
+
+
+    /**
+     * Handles zoom events for the TPad separate from the motion event.
+     * @author oliver
+     * @param  event
+     */
+    public boolean onZoomEventTPad(MotionEvent event) {
+        try {
+            tPadZoomTouch.handleEvent(event);
+        }
+        catch (Exception e) {
+            Log.d("FDebug", "motionEvent failed");
+        }
+        return true;
     }
 }
