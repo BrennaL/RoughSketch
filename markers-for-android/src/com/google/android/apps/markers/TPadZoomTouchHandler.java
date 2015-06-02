@@ -4,17 +4,21 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 
 import nxr.tpad.lib.TPad;
 
+/**
+ * A class that handles touch/zoom sensations
+ * @author oliver
+ */
 public class TPadZoomTouchHandler {
 	private TPad tPad;
 	private View view;
 	private Brush currentBrush;
 	private Resources resources;
-
-    private long lastDownTimeMillis = 0;
+    VelocityTracker mVelocityTracker;
 
 	public TPadZoomTouchHandler(TPad tPad, View view) {
 		this.tPad = tPad;
@@ -30,18 +34,47 @@ public class TPadZoomTouchHandler {
 //        long t = System.currentTimeMillis();
 //        float friction = (float)Math.sin(t/1000.0*frequency*2*Math.PI)/2+0.5f;
 
-        final int action = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
-                ? event.getActionMasked()
-                : event.getAction();
+        float friction = 0;
 
-        if(action == MotionEvent.ACTION_DOWN)
-        {
-            lastDownTimeMillis = System.currentTimeMillis();
+
+        //Handy Velocity calculator
+        //retrieved from:
+        //https://developer.android.com/reference/android/support/v4/view/VelocityTrackerCompat.html
+        int index = event.getActionIndex();
+        int action = event.getActionMasked();
+        int pointerId = event.getPointerId(index);
+
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                if(mVelocityTracker == null) {
+                    // Retrieve a new VelocityTracker object to watch the velocity of a motion.
+                    mVelocityTracker = VelocityTracker.obtain();
+                }
+                else {
+                    // Reset the velocity tracker back to its initial state.
+                    mVelocityTracker.clear();
+                }
+                // Add a user's movement to the tracker.
+                mVelocityTracker.addMovement(event);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mVelocityTracker.addMovement(event);
+                // When you want to determine the velocity, call
+                // computeCurrentVelocity(). Then call getXVelocity()
+                // and getYVelocity() to retrieve the velocity for each pointer ID.
+                mVelocityTracker.computeCurrentVelocity(1000);
+                double velocity = Math.sqrt(
+                        mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
+                        mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0));
+                friction = 0.5f*(float)Math.min(Math.max(0, (velocity-250)/1000.0),1);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                // Return a VelocityTracker object back to be re-used by others.
+                mVelocityTracker.recycle();
+                break;
         }
 
-        long t = System.currentTimeMillis();
-
-        float friction = (float)Math.min((t - lastDownTimeMillis)/500.0, 1.0f);
 		try {
             tPad.sendFriction(friction);
 		}
