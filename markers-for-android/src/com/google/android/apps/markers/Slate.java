@@ -125,7 +125,9 @@ public class Slate extends View {
     private int mMemClass;
     private boolean mLowMem;
     
+    // TPad globals
     private TPad mTpad;
+	private TPadBrushHandler sampler;
 
     public interface SlateListener {
         void strokeStarted();
@@ -417,13 +419,15 @@ public class Slate extends View {
     
     private static Paint sBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG);
     
-    public Slate(Context c, AttributeSet as) {
+    public Slate(Context c, AttributeSet as, TPad t) {
         super(c, as);
+        setTpad(t);
         init();
     }
     
-    public Slate(Context c) {
+    public Slate(Context c, TPad t) {
     	super(c);
+    	setTpad(t);
     	init();
     }
 
@@ -431,7 +435,7 @@ public class Slate extends View {
     private void init() {
 //        setWillNotCacheDrawing(true);
 //        setDrawingCacheEnabled(false);
-        
+    	
         mEmpty = true;
 
         // setup brush bitmaps
@@ -505,6 +509,7 @@ public class Slate extends View {
             mDebugPaints[4].setStyle(Paint.Style.FILL);
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
+        this.sampler = new TPadBrushHandler(mTpad, this);
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -921,9 +926,6 @@ public class Slate extends View {
 
         mEmpty = false;
         
-        //TODO: Change this to send 'smarter' friction levels
-        mTpad.sendFriction(0.5f);
-
         // starting a new touch? commit the previous state of the canvas
         if (action == MotionEvent.ACTION_DOWN) {
             commitStroke();
@@ -1011,10 +1013,13 @@ public class Slate extends View {
             }
             dbgX = dbgY = -1;
         }
+        // Call the TPad after all drawing has been calculated
+        onTouchEventTPad(event);
         return true;
     }
+  
 
-    public static float lerp(float a, float b, float f) {
+	public static float lerp(float a, float b, float f) {
         return a + f * (b - a);
     }
 
@@ -1052,6 +1057,10 @@ public class Slate extends View {
         return (float) DENSITY;
     }
     
+	//-----------------------------------------------------------------------------------------
+	// TPad stuff
+	//-----------------------------------------------------------------------------------------
+
     // BEGIN MERGE OF FrictionMapView FILE: 
 	// Called by creating activity to initialize the local TPad reference object
 	public void setTpad(TPad tpad) {
@@ -1061,6 +1070,22 @@ public class Slate extends View {
 			Log.w("FrictionMapView", "Warning: This view is being passed a null tpad! Expect no friction!");
 			ex.printStackTrace();
 		}
-		mTpad = tpad;
+		this.mTpad = tpad;
 	}
+		
+	 /**
+     * Handles touch events for the TPad separate from the motion event.
+     * @author : bucci
+     * @param  : MotionEvent event   
+     */
+	
+    public boolean onTouchEventTPad(MotionEvent event) {
+    	try {
+	    	sampler.handleEvent(event);
+    	}
+    	catch (Exception e) {
+    		Log.d("FDebug", "motionEvent failed");
+    	}
+        return true;
+    }    
 }

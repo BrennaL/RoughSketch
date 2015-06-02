@@ -228,9 +228,7 @@ public class MarkersActivity extends Activity
         mSlate = (Slate) getLastNonConfigurationInstance();
         if (mSlate == null) {
         	nTpad = new TPadImpl(this);
-        	mSlate = new Slate(this);
-
-        	mSlate.setTpad(nTpad);
+        	mSlate = new Slate(this, nTpad);
         	// Load the old buffer if necessary
             if (!mJustLoadedImage) {
                 loadDrawing(WIP_FILENAME, true);
