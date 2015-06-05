@@ -46,11 +46,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import nxr.tpad.lib.TPad;
-
+import android.content.res.Resources;
 import org.dsandler.apps.markers.R;
 
 public class Slate extends View {
-
+	private Resources resources;
     static final boolean DEBUG = false;
     static final String TAG = "Slate";
     
@@ -273,6 +273,7 @@ public class Slate extends View {
             case TYPE_AIRBRUSH:
                 mShape = SHAPE_BITMAP_AIRBRUSH;
                 mInkDensity = 0x80;
+                
                 break;
             case TYPE_FOUNTAIN_PEN:
                 mShape = SHAPE_FOUNTAIN_PEN;
@@ -333,6 +334,7 @@ public class Slate extends View {
                 break;
             }
             dirty.union(x-r, y-r, x+r, y+r);
+
         }
         
         private final RectF tmpDirtyRectF = new RectF();
@@ -510,6 +512,7 @@ public class Slate extends View {
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
         this.sampler = new TPadBrushHandler(mTpad, this);
+      
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -759,11 +762,24 @@ public class Slate extends View {
         for (MarkersPlotter plotter : mStrokes) {
             // XXX: todo: only do this if the stroke hasn't begun already
             // ...or not; the current behavior allows RAINBOW MODE!!!1!
+      // TODO  Brenna Changes//
+        	if (color == Color.WHITE){
+        		Brush eraseBrush = new EraseBrush(resources); 
+        		this.sampler.changeBrush(eraseBrush); 
+        		plotter.setPenColor(color);
+        	}
+        	else
             plotter.setPenColor(color);
         }
     }
     
     public void setPenType(int shape) {
+// TODO Brenna Changes // 
+    	if (shape == TYPE_AIRBRUSH){
+    		Brush SandBrush = new SandBrush(resources);
+    		this.sampler.changeBrush(SandBrush);
+    		
+    	}
         for (MarkersPlotter plotter : mStrokes) {
             plotter.setPenType(shape);
         }

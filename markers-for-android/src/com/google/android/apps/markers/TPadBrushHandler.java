@@ -15,12 +15,14 @@ public class TPadBrushHandler {
 	private View view;
 	private Brush currentBrush;
 	private Resources resources;
+	private EraseBrush eraseBrush;
 	
 	public TPadBrushHandler(TPad tPad, View view) {
 		this.tPad = tPad;
 		this.view = view;
 		this.resources = view.getResources();
 		currentBrush = new DefaultBrush(resources);
+		
 	}
 	
 	public void changeBrush(Brush b) {
@@ -30,6 +32,8 @@ public class TPadBrushHandler {
 	
 	public void handleEvent(MotionEvent event) {
 		// Values from 0.0f-1.0f are 0-100% tPad activation
+		// TODO if (){}
+			
 		currentBrush.handleEvent(event);
 		try {
 			tPad.sendFrictionBuffer(currentBrush.getPixelBuffer());

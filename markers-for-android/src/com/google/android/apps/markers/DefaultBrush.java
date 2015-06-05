@@ -9,10 +9,9 @@ public class DefaultBrush extends Brush {
 	public DefaultBrush(Resources resources) {
 		super(resources);
 
-		// Brush settings
-		
+		// Brush settings	
 		// Length in number of event calls of a brush gesture 
-		super.gestureLength = 125;
+		super.gestureLength = 120;
 		// Initialize the weight array to the length of a brush gesture
 		super.gestureWeights = new float[gestureLength];
 		// Apply the g(x) function, where x is events since beginning of gesture

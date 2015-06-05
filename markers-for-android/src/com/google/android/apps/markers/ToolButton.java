@@ -72,7 +72,6 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
         mFgColor = getResources().getColorStateList(R.color.pentool_fg);
         mBgColor = getResources().getColorStateList(R.color.pentool_bg);
     }
-    
     public static class PenToolButton extends ToolButton {
         private static final String PREF_STROKE_MIN = ":min";
         private static final String PREF_STROKE_MAX = ":max";
@@ -204,6 +203,7 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
             super.onAttachedToWindow();
             if (penType == Slate.TYPE_AIRBRUSH) {
                 icon = BitmapFactory.decodeResource(getResources(), R.drawable.airbrush_dark);
+                //TODO//
                 if (icon == null) {
                     throw new RuntimeException("PenTypeButton: could not load airbrush bitmap");
                 }
