@@ -510,6 +510,9 @@ public class Slate extends View {
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
         this.sampler = new TPadBrushHandler(mTpad, this);
+        
+        Brush pen = new StaticPen(res);
+        this.sampler.changeBrush(pen);
     }
 
     public boolean isEmpty() { return mEmpty; }

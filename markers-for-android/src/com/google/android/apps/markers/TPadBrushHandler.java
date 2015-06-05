@@ -32,6 +32,7 @@ public class TPadBrushHandler {
 		// Values from 0.0f-1.0f are 0-100% tPad activation
 		currentBrush.handleEvent(event);
 		try {
+			//Log.d("FDebug", "BrushFriction : " + currentBrush.getPixelBuffer()[0]);
 			tPad.sendFrictionBuffer(currentBrush.getPixelBuffer());
 		}
 		catch (Exception e) {

@@ -53,7 +53,7 @@ public abstract class Brush {
 				break;
 			case MotionEvent.ACTION_MOVE:
 				gestureTracker++;
-				Log.d("FDebug", "GestureTracker : " + gestureTracker);
+
 				try {
 					continueGesture(event);
 				}
@@ -227,6 +227,7 @@ public abstract class Brush {
 			}
 		}
 	}
+
 
 	// Main mapping to go from a pixel color to a friction value. OVERRIDE THIS
 	// FUNCTION FOR NEW MAPPINGS FROM COLOR TO FRICTION
