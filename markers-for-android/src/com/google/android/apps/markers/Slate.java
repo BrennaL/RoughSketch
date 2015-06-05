@@ -50,7 +50,7 @@ import android.content.res.Resources;
 import org.dsandler.apps.markers.R;
 
 public class Slate extends View {
-	private Resources resources;
+	private Resources resources = getContext().getResources();
     static final boolean DEBUG = false;
     static final String TAG = "Slate";
     
