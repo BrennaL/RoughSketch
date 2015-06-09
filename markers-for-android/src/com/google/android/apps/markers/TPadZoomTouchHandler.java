@@ -52,10 +52,6 @@ public class TPadZoomTouchHandler {
 
             friction = 1.0f - (float) Math.max(0, Math.min( (distance_squared-4000) / 400000.0, 1));
 
-            Log.d("ROUGHSKETCH", "distance_squared: " + distance_squared + ", friction: " + friction);
-
-
-
         } else {
             //not zoom, mimic friction
 
