@@ -29,6 +29,8 @@
 	        <enum name="feltTip" value="1" />
 	        <enum name="airbrush" value="2" />
 	        <enum name="fountainpen" value="3" />
+	        <enum name="paintbrush" value="4" />
+	        <enum name="eraser" value="5" />
         </attr>
     </declare-styleable>
 </resources>
