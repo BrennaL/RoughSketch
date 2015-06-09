@@ -209,7 +209,20 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
                 }
                 frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
             } else if (penType == Slate.TYPE_FOUNTAIN_PEN) {
-                icon = BitmapFactory.decodeResource(getResources(), R.drawable.fountainpen);
+                icon = BitmapFactory.decodeResource(getResources(), R.drawable.fountain_pen);
+                if (icon == null) {
+                    throw new RuntimeException("PenTypeButton: could not load fountainpen bitmap");
+                }
+                frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
+            } else if (penType == Slate.TYPE_PAINTBRUSH) {
+                icon = BitmapFactory.decodeResource(getResources(), R.drawable.brush_new);
+                if (icon == null) {
+                    throw new RuntimeException("PenTypeButton: could not load fountainpen bitmap");
+                }
+                frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
+            }
+            else if (penType == Slate.TYPE_ERASER) {
+                icon = BitmapFactory.decodeResource(getResources(), R.drawable.eraser_new);
                 if (icon == null) {
                     throw new RuntimeException("PenTypeButton: could not load fountainpen bitmap");
                 }
@@ -254,6 +267,18 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
                     }
                     break;
                 case Slate.TYPE_WHITEBOARD:
+                case Slate.TYPE_PAINTBRUSH:
+					mPaint.setAlpha(0xFF);
+					if (icon != null) {
+						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
+					}
+					break;
+                case Slate.TYPE_ERASER:
+					mPaint.setAlpha(0xFF);
+					if (icon != null) {
+						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
+					}
+					break;
                 default:
                     mPaint.setAlpha(0xFF);
                     canvas.drawCircle(x, y, r, mPaint);
@@ -336,7 +361,7 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
         public ZoomToolButton(Context context, AttributeSet attrs, int defStyle) {
             super(context, attrs, defStyle);
             
-            icon = BitmapFactory.decodeResource(getResources(), R.drawable.grabber);
+            icon = BitmapFactory.decodeResource(getResources(), R.drawable.zoom);
             frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
         }
         

@@ -83,12 +83,15 @@ public class Slate extends View {
     public static final int TYPE_FELTTIP = 1;
     public static final int TYPE_AIRBRUSH = 2;
     public static final int TYPE_FOUNTAIN_PEN = 3;
+    public static final int TYPE_PAINTBRUSH = 4;
+    public static final int TYPE_ERASER = 5;
     
     public static final int SHAPE_CIRCLE = 0;
     public static final int SHAPE_SQUARE = 1;
 //    public static final int SHAPE_BITMAP_CIRCLE = 2;
     public static final int SHAPE_BITMAP_AIRBRUSH = 3;
     public static final int SHAPE_FOUNTAIN_PEN = 4;
+	
 
     private float mPressureExponent = 2.0f;
 
@@ -96,6 +99,8 @@ public class Slate extends View {
     private float mRadiusMax;
 
     int mDebugFlags = 0;
+    
+    private boolean erasing = false;
 
     private TiledBitmapCanvas mTiledCanvas;
     private final Paint mDebugPaints[] = new Paint[10];
@@ -239,7 +244,7 @@ public class Slate extends View {
 
         public void setPenColor(int color) {
             mPenColor = color;
-            if (color == 0) {
+            if (color == 0 || erasing) {
                 // eraser: DST_OUT
                 mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
                 mPaint.setColor(Color.BLACK);
@@ -261,6 +266,7 @@ public class Slate extends View {
         
         public void setPenType(int type) {
             mPenType = type;
+            erasing = false;
             switch (type) {
             case TYPE_WHITEBOARD:
                 mShape = SHAPE_CIRCLE;
@@ -278,8 +284,19 @@ public class Slate extends View {
                 mShape = SHAPE_FOUNTAIN_PEN;
                 mInkDensity = 0xff;
                 break;
+            case TYPE_PAINTBRUSH:
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0x10;
+                break;
+            case TYPE_ERASER:
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0xff;
+                erasing = true;
+                break;
             }
             setPenColor(mPenColor);
+            
+            
         }
         
         public int getPenType() {
@@ -853,6 +870,7 @@ public class Slate extends View {
     }
 
     private static final float[] mvals = new float[9];
+
     public static float getScale(Matrix m) {
         m.getValues(mvals);
         return mvals[0];
