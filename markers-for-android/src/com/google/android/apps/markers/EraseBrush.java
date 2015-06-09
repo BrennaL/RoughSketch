@@ -11,7 +11,7 @@ public class EraseBrush extends Brush {
 
 		// Brush settings	
 		// Length in number of event calls of a brush gesture 
-		super.gestureLength = 120;
+		super.gestureLength = 100;
 		// Initialize the weight array to the length of a brush gesture
 		super.gestureWeights = new float[gestureLength];
 		// Apply the g(x) function, where x is events since beginning of gesture
@@ -39,7 +39,7 @@ public class EraseBrush extends Brush {
 	private float g(int min, int max, int i) {
 		// Change this logic to define a new function.
 		int range = max - min;
-		float ret = ((float) i) / ((float) range);  
+		float ret = (2 * (float) i) / ((float) range); 
 		return ret;
 	}
 }
