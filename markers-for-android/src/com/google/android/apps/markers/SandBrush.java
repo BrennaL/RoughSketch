@@ -19,7 +19,7 @@ public class SandBrush extends Brush {
 		// Apply the g(x) function, where x is events since beginning of gesture
 		this.generateWeights();
 		// The texture of the brush 
-		setDataBitmap(R.drawable.filter);		
+		setDataBitmap(R.drawable.blacknwhite);		
 	}
 		
 		@Override
@@ -38,8 +38,11 @@ public class SandBrush extends Brush {
 		 */
 		private float g(int min, int max, int i) {
 			// Change this logic to define a new function.
+			//
+			
 			int range = max - min;
-			float ret = ((float) i) / ((float) range);  
+			//float ret = ((float) i) / ((float) range);  
+			float ret = ((float) i);
 			return ret;
 		}
 
