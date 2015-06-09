@@ -216,8 +216,8 @@ public class Slate extends View {
             return mLastTool;
         }
 
-        public void setPenType(int shape) {
-            mRenderer.setPenType(shape);
+        public void setPenType(int shape, TPadBrushHandler sampler) {
+            mRenderer.setPenType(shape, sampler);
         }
     }
     
@@ -236,6 +236,8 @@ public class Slate extends View {
         private PathMeasure mWorkPathMeasure = new PathMeasure();
         
         private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        
+        final Resources res = getContext().getResources();
         
         int mInkDensity = 0xff; // set to 0x20 or so for a felt-tip look, 0xff for traditional Markers
         
@@ -264,7 +266,7 @@ public class Slate extends View {
             return mPenColor;
         }
         
-        public void setPenType(int type) {
+        public void setPenType(int type, TPadBrushHandler sampler) {
             mPenType = type;
             erasing = false;
             switch (type) {
@@ -281,6 +283,8 @@ public class Slate extends View {
                 mInkDensity = 0x80;
                 break;
             case TYPE_FOUNTAIN_PEN:
+                Brush pen = new StaticPen(res);
+                sampler.changeBrush(pen);
                 mShape = SHAPE_FOUNTAIN_PEN;
                 mInkDensity = 0xff;
                 break;
@@ -528,8 +532,7 @@ public class Slate extends View {
         }
         this.sampler = new TPadBrushHandler(mTpad, this);
         
-        Brush pen = new StaticPen(res);
-        this.sampler.changeBrush(pen);
+
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -784,8 +787,9 @@ public class Slate extends View {
     }
     
     public void setPenType(int shape) {
+    	
         for (MarkersPlotter plotter : mStrokes) {
-            plotter.setPenType(shape);
+            plotter.setPenType(shape, sampler);
         }
     }
     
