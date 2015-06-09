@@ -46,11 +46,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import nxr.tpad.lib.TPad;
-
+import android.content.res.Resources;
 import org.dsandler.apps.markers.R;
 
 public class Slate extends View {
-
+	private Resources resources = getContext().getResources();
     static final boolean DEBUG = false;
     static final String TAG = "Slate";
     
@@ -279,6 +279,8 @@ public class Slate extends View {
                 mInkDensity = 0x10;
                 break;
             case TYPE_AIRBRUSH:
+            	Brush SandBrush = new SandBrush(resources);
+        		sampler.changeBrush(SandBrush);
                 mShape = SHAPE_BITMAP_AIRBRUSH;
                 mInkDensity = 0x80;
                 break;
@@ -295,6 +297,8 @@ public class Slate extends View {
                 mInkDensity = 0x10;
                 break;
             case TYPE_ERASER:
+            	Brush eraseBrush = new EraseBrush(resources); 
+        		sampler.changeBrush(eraseBrush); 
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0xff;
                 erasing = true;
@@ -356,6 +360,7 @@ public class Slate extends View {
                 break;
             }
             dirty.union(x-r, y-r, x+r, y+r);
+
         }
         
         private final RectF tmpDirtyRectF = new RectF();
@@ -533,7 +538,6 @@ public class Slate extends View {
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
         this.sampler = new TPadBrushHandler(mTpad, this);
-        
 
     }
 
@@ -789,7 +793,6 @@ public class Slate extends View {
     }
     
     public void setPenType(int shape) {
-    	
         for (MarkersPlotter plotter : mStrokes) {
             plotter.setPenType(shape, sampler);
         }
