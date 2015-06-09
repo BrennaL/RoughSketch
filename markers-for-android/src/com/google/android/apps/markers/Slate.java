@@ -289,6 +289,8 @@ public class Slate extends View {
                 mInkDensity = 0xff;
                 break;
             case TYPE_PAINTBRUSH:
+            	Brush paint = new DefaultBrush(res);
+                sampler.changeBrush(paint);
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0x10;
                 break;
