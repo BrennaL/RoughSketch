@@ -80,10 +80,14 @@ public class TPadZoomTouchHandler {
                     // computeCurrentVelocity(). Then call getXVelocity()
                     // and getYVelocity() to retrieve the velocity for each pointer ID.
                     mVelocityTracker.computeCurrentVelocity(1000);
-                    double velocity = Math.sqrt(
-                            mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
-                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0));
-                    friction = 0.5f*(float)Math.min(Math.max(0, (velocity-250)/1000.0),1);
+//                    double velocity = Math.sqrt(
+//                            mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
+//                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0));
+                    double velocity_squared =  mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
+                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0);
+//                    friction = 0.5f*(float)Math.min(Math.max(0, (velocity-250)/1000.0),1);
+                    friction = 0.75f*(float)Math.min(Math.max(0, (velocity_squared-1000)/200000.0),1);
+
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
@@ -91,6 +95,7 @@ public class TPadZoomTouchHandler {
                     mVelocityTracker.recycle();
                     break;
             }
+
 
         }
 
