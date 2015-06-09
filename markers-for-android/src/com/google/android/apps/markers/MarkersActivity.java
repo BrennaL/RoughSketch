@@ -331,7 +331,7 @@ public class MarkersActivity extends Activity
                 MarkersActivity.this.setPenType(penType);
                 mLastPenType = mActivePenType;
                 mActivePenType = tool;
-                if (mLastPenType != mActivePenType) {
+                if (mLastPenType != mActivePenType && mLastPenType != null) {
                     mLastPenType.deactivate();
                     mPrefs.edit().putString(PREF_LAST_TOOL_TYPE, (String) mActivePenType.getTag())
                         .commit();
@@ -433,7 +433,7 @@ public class MarkersActivity extends Activity
         loadSettings();
 
         mActiveTool.click();
-        mActivePenType.click();
+        if (mActivePenType != null) mActivePenType.click();
 
         // clickDebug(null); // auto-debug mode for testing devices
 		// Set the content of the screen to the .xml file that is in the layout folder

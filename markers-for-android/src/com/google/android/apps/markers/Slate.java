@@ -279,26 +279,22 @@ public class Slate extends View {
                 mInkDensity = 0x10;
                 break;
             case TYPE_AIRBRUSH:
-            	Brush SandBrush = new SandBrush(resources);
-        		sampler.changeBrush(SandBrush);
+        		sampler.changeBrush(sampler.sandBrush);
                 mShape = SHAPE_BITMAP_AIRBRUSH;
                 mInkDensity = 0x80;
                 break;
             case TYPE_FOUNTAIN_PEN:
-                Brush pen = new StaticPen(res);
-                sampler.changeBrush(pen);
+                sampler.changeBrush(sampler.pen);
                 mShape = SHAPE_FOUNTAIN_PEN;
                 mInkDensity = 0xff;
                 break;
             case TYPE_PAINTBRUSH:
-            	Brush paint = new DefaultBrush(res);
-                sampler.changeBrush(paint);
+                sampler.changeBrush(sampler.defaultBrush);
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0x10;
                 break;
-            case TYPE_ERASER:
-            	Brush eraseBrush = new EraseBrush(resources); 
-        		sampler.changeBrush(eraseBrush); 
+            case TYPE_ERASER: 
+        		sampler.changeBrush(sampler.eraseBrush); 
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0xff;
                 erasing = true;

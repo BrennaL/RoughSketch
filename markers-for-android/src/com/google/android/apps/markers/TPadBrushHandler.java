@@ -15,13 +15,22 @@ public class TPadBrushHandler {
 	private View view;
 	private Brush currentBrush;
 	private Resources resources;
-	private EraseBrush eraseBrush;
+	
+	public Brush defaultBrush;
+	public Brush eraseBrush;
+	public Brush sandBrush;
+	public Brush pen;
 	
 	public TPadBrushHandler(TPad tPad, View view) {
 		this.tPad = tPad;
 		this.view = view;
 		this.resources = view.getResources();
-		currentBrush = new DefaultBrush(resources);
+		
+		defaultBrush = new DefaultBrush(resources);
+		sandBrush = new SandBrush(resources);
+		pen = new StaticPen(resources);
+		
+		currentBrush = defaultBrush;
 		
 	}
 	
