@@ -29,6 +29,7 @@ public class TPadBrushHandler {
 		defaultBrush = new DefaultBrush(resources);
 		sandBrush = new SandBrush(resources);
 		pen = new StaticPen(resources);
+		eraseBrush = new EraseBrush(resources); 
 		
 		currentBrush = defaultBrush;
 		
