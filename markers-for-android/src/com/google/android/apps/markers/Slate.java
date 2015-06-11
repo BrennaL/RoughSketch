@@ -289,7 +289,7 @@ public class Slate extends View {
                 mInkDensity = 0xff;
                 break;
             case TYPE_PAINTBRUSH:
-                sampler.changeBrush(sampler.defaultBrush);
+                sampler.changeBrush(sampler.fingerPaint);//TODO add brush officially or whatevs
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0x10;
                 break;
