@@ -46,11 +46,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import nxr.tpad.lib.TPad;
-
+import android.content.res.Resources;
 import org.dsandler.apps.markers.R;
 
 public class Slate extends View {
-
+	private Resources resources = getContext().getResources();
     static final boolean DEBUG = false;
     static final String TAG = "Slate";
     
@@ -216,8 +216,8 @@ public class Slate extends View {
             return mLastTool;
         }
 
-        public void setPenType(int shape) {
-            mRenderer.setPenType(shape);
+        public void setPenType(int shape, TPadBrushHandler sampler) {
+            mRenderer.setPenType(shape, sampler);
         }
     }
     
@@ -236,6 +236,8 @@ public class Slate extends View {
         private PathMeasure mWorkPathMeasure = new PathMeasure();
         
         private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        
+        final Resources res = getContext().getResources();
         
         int mInkDensity = 0xff; // set to 0x20 or so for a felt-tip look, 0xff for traditional Markers
         
@@ -264,7 +266,7 @@ public class Slate extends View {
             return mPenColor;
         }
         
-        public void setPenType(int type) {
+        public void setPenType(int type, TPadBrushHandler sampler) {
             mPenType = type;
             erasing = false;
             switch (type) {
@@ -277,18 +279,22 @@ public class Slate extends View {
                 mInkDensity = 0x10;
                 break;
             case TYPE_AIRBRUSH:
+        		sampler.changeBrush(sampler.sandBrush);
                 mShape = SHAPE_BITMAP_AIRBRUSH;
                 mInkDensity = 0x80;
                 break;
             case TYPE_FOUNTAIN_PEN:
+                sampler.changeBrush(sampler.pen);
                 mShape = SHAPE_FOUNTAIN_PEN;
                 mInkDensity = 0xff;
                 break;
             case TYPE_PAINTBRUSH:
+                sampler.changeBrush(sampler.defaultBrush);
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0x10;
                 break;
-            case TYPE_ERASER:
+            case TYPE_ERASER: 
+        		sampler.changeBrush(sampler.eraseBrush); 
                 mShape = SHAPE_CIRCLE; 
                 mInkDensity = 0xff;
                 erasing = true;
@@ -350,6 +356,7 @@ public class Slate extends View {
                 break;
             }
             dirty.union(x-r, y-r, x+r, y+r);
+
         }
         
         private final RectF tmpDirtyRectF = new RectF();
@@ -529,6 +536,7 @@ public class Slate extends View {
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
         this.sampler = new TPadBrushHandler(mTpad, this);
+
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -784,7 +792,7 @@ public class Slate extends View {
     
     public void setPenType(int shape) {
         for (MarkersPlotter plotter : mStrokes) {
-            plotter.setPenType(shape);
+            plotter.setPenType(shape, sampler);
         }
     }
     

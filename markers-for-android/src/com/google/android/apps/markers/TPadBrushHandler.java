@@ -16,11 +16,21 @@ public class TPadBrushHandler {
 	private Brush currentBrush;
 	private Resources resources;
 	
+	public Brush defaultBrush;
+	public Brush eraseBrush;
+	public Brush sandBrush;
+	public Brush pen;
+	
 	public TPadBrushHandler(TPad tPad, View view) {
 		this.tPad = tPad;
 		this.view = view;
 		this.resources = view.getResources();
 		currentBrush = new FingerPaintBrush(resources, view);
+	
+		defaultBrush = new DefaultBrush(resources);
+		sandBrush = new SandBrush(resources);
+		pen = new StaticPen(resources);	
+		currentBrush = defaultBrush;
 	}
 	
 	
@@ -32,8 +42,11 @@ public class TPadBrushHandler {
 	
 	public void handleEvent(MotionEvent event) {
 		// Values from 0.0f-1.0f are 0-100% tPad activation
+		// TODO if (){}
+			
 		currentBrush.handleEvent(event);
 		try {
+			//Log.d("FDebug", "BrushFriction : " + currentBrush.getPixelBuffer()[0]);
 			tPad.sendFrictionBuffer(currentBrush.getPixelBuffer());
 		}
 		catch (Exception e) {
