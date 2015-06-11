@@ -20,8 +20,10 @@ public class TPadBrushHandler {
 		this.tPad = tPad;
 		this.view = view;
 		this.resources = view.getResources();
-		currentBrush = new DefaultBrush(resources);
+		currentBrush = new FingerPaintBrush(resources, view);
 	}
+	
+	
 	
 	public void changeBrush(Brush b) {
 		currentBrush = null;

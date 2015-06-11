@@ -453,6 +453,8 @@ public class Slate extends View {
 //        setWillNotCacheDrawing(true);
 //        setDrawingCacheEnabled(false);
     	
+ 
+    	
         mEmpty = true;
 
         // setup brush bitmaps
