@@ -50,7 +50,7 @@ public class TPadZoomTouchHandler {
 
             double distance_squared = dx*dx + dy*dy;
 
-            friction = 1.0f - (float) Math.max(0, Math.min( (distance_squared-4000) / 400000.0, 1));
+            friction = 1.0f - 0.8f*(float) Math.max(0, Math.min( (distance_squared-4000) / 150000.0, 1));
 
         } else {
             //not zoom, mimic friction
