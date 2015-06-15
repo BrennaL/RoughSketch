@@ -20,6 +20,9 @@ public class TPadZoomTouchHandler {
 	private Resources resources;
     VelocityTracker mVelocityTracker;
 
+    private boolean single_finger_last = true;
+    private double initial_distance = 0;
+
 	public TPadZoomTouchHandler(TPad tPad, View view) {
 		this.tPad = tPad;
 		this.view = view;
@@ -38,6 +41,7 @@ public class TPadZoomTouchHandler {
 
         if (event.getPointerCount() >1)
         {
+
             //Zoom, etc.
             MotionEvent.PointerCoords coords1 = new MotionEvent.PointerCoords();
             MotionEvent.PointerCoords coords2 = new MotionEvent.PointerCoords();
@@ -48,13 +52,26 @@ public class TPadZoomTouchHandler {
             float dx = coords1.x - coords2.x;
             float dy = coords1.y - coords2.y;
 
-            double distance_squared = dx*dx + dy*dy;
+            double distance = Math.sqrt(dx*dx + dy*dy);
 
-            friction = 1.0f - 0.8f*(float) Math.max(0, Math.min( (distance_squared-4000) / 150000.0, 1));
+            if (single_finger_last)
+            {
+                //friction is relative to initial distance
+                initial_distance = distance;
+                friction = 0.8f;
+            } else {
+
+                double distance_squared = (distance - initial_distance)*(distance-initial_distance);
+                friction = 0.8f - 0.8f*(float) Math.max(0, Math.min( (distance_squared) / 50000.0, 1));
+            }
+
+            single_finger_last = false;
 
         } else {
             //not zoom, mimic friction
 
+
+            single_finger_last = true;
             //Handy Velocity calculator
             //retrieved from:
             //https://developer.android.com/reference/android/support/v4/view/VelocityTrackerCompat.html
