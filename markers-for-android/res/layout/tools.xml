@@ -72,7 +72,7 @@
         markers:strokeWidthMax="24dp"
         />
     <!-- fat marker -->
-    <view
+    <!-- <view
         class="com.google.android.apps.markers.ToolButton$PenToolButton"
         android:id="@+id/fat_marker"
         android:tag="pen_marker"
@@ -82,7 +82,7 @@
         android:layout_weight="1"
         markers:strokeWidthMin="18dp"
         markers:strokeWidthMax="48dp"
-        />
+        /> -->
 	<LinearLayout
 	    android:orientation="vertical"
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
         android:layout_weight="2"
         android:layout_marginTop="@dimen/tool_palette_gutter"
 	    >
-	    <view
+	    <!-- <view
            class="com.google.android.apps.markers.ToolButton$PenTypeButton"
            android:id="@+id/whiteboard_marker"
            android:tag="type_whiteboard"
@@ -99,7 +99,7 @@
            android:padding="3dp"
            android:layout_weight="1"
            markers:penType="whiteboard"
-           />
+         />
 	    <view
            class="com.google.android.apps.markers.ToolButton$PenTypeButton"
            android:id="@+id/felttip_marker"
@@ -110,7 +110,7 @@
            android:layout_weight="1"
            markers:penType="feltTip"
            />
-	    <view
+	    <view 
            class="com.google.android.apps.markers.ToolButton$PenTypeButton"
            android:id="@+id/airbrush_marker"
            android:tag="type_airbrush"
@@ -119,7 +119,7 @@
            android:padding="1dp"
            android:layout_weight="1"
            markers:penType="airbrush"
-           />
+           /> -->
 	    <view
            class="com.google.android.apps.markers.ToolButton$PenTypeButton"
            android:id="@+id/fountainpen_marker"
@@ -130,5 +130,25 @@
            android:layout_weight="1"
            markers:penType="fountainpen"
            />
+	    <view
+           class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+           android:id="@+id/paintbrush_marker"
+           android:tag="type_paintbrush"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:padding="2dp"
+           android:layout_weight="1"
+           markers:penType="paintbrush"
+          />
+	    <view
+           class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+           android:id="@+id/eraser"
+           android:tag="type_eraser"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:padding="2dp"
+           android:layout_weight="1"
+           markers:penType="eraser"
+          />
     </LinearLayout>
 </LinearLayout>

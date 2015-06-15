@@ -331,7 +331,7 @@ public class MarkersActivity extends Activity
                 MarkersActivity.this.setPenType(penType);
                 mLastPenType = mActivePenType;
                 mActivePenType = tool;
-                if (mLastPenType != mActivePenType) {
+                if (mLastPenType != mActivePenType && mLastPenType != null) {
                     mLastPenType.deactivate();
                     mPrefs.edit().putString(PREF_LAST_TOOL_TYPE, (String) mActivePenType.getTag())
                         .commit();
@@ -397,35 +397,43 @@ public class MarkersActivity extends Activity
         final ToolButton penThickButton = (ToolButton) findViewById(R.id.pen_thick);
         penThickButton.setCallback(toolCB);
 
-        final ToolButton fatMarkerButton = (ToolButton) findViewById(R.id.fat_marker);
-        if (fatMarkerButton != null) {
-            fatMarkerButton.setCallback(toolCB);
-        }
-
-        final ToolButton typeWhiteboardButton = (ToolButton) findViewById(R.id.whiteboard_marker);
-        typeWhiteboardButton.setCallback(toolCB);
-
-        final ToolButton typeFeltTipButton = (ToolButton) findViewById(R.id.felttip_marker);
-        if (typeFeltTipButton != null) {
-            typeFeltTipButton.setCallback(toolCB);
-        }
-        
-        final ToolButton typeAirbrushButton = (ToolButton) findViewById(R.id.airbrush_marker);
-        if (typeAirbrushButton != null) {
-            typeAirbrushButton.setCallback(toolCB);
-        }
-        
+//        final ToolButton fatMarkerButton = (ToolButton) findViewById(R.id.fat_marker);
+//        if (fatMarkerButton != null) {
+//            fatMarkerButton.setCallback(toolCB);
+//        }
+//
+//        final ToolButton typeWhiteboardButton = (ToolButton) findViewById(R.id.whiteboard_marker);
+//        typeWhiteboardButton.setCallback(toolCB);
+//
+//        final ToolButton typeFeltTipButton = (ToolButton) findViewById(R.id.felttip_marker);
+//        if (typeFeltTipButton != null) {
+//            typeFeltTipButton.setCallback(toolCB);
+//        }
+//        
+//        final ToolButton typeAirbrushButton = (ToolButton) findViewById(R.id.paintbrush_marker);
+//        if (typeAirbrushButton != null) {
+//            typeAirbrushButton.setCallback(toolCB);
+//        }
+//        
         final ToolButton typeFountainPenButton = (ToolButton) findViewById(R.id.fountainpen_marker);
         if (typeFountainPenButton != null) {
             typeFountainPenButton.setCallback(toolCB);
         }
+        final ToolButton typePaintBrushButton = (ToolButton) findViewById(R.id.paintbrush_marker);
+        if (typePaintBrushButton != null) {
+            typePaintBrushButton.setCallback(toolCB);
+        }
+        final ToolButton typeEraserButton = (ToolButton) findViewById(R.id.eraser);
+        if (typeEraserButton != null) {
+            typeEraserButton.setCallback(toolCB);
+        }
         
-        mLastPenType = mActivePenType = typeWhiteboardButton;
+        mLastPenType = mActivePenType = typeFountainPenButton;
 
         loadSettings();
 
         mActiveTool.click();
-        mActivePenType.click();
+        if (mActivePenType != null) mActivePenType.click();
 
         // clickDebug(null); // auto-debug mode for testing devices
 		// Set the content of the screen to the .xml file that is in the layout folder

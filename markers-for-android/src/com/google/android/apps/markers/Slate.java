@@ -46,11 +46,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import nxr.tpad.lib.TPad;
-
+import android.content.res.Resources;
 import org.dsandler.apps.markers.R;
 
 public class Slate extends View {
-
+	private Resources resources = getContext().getResources();
     static final boolean DEBUG = false;
     static final String TAG = "Slate";
     
@@ -83,12 +83,15 @@ public class Slate extends View {
     public static final int TYPE_FELTTIP = 1;
     public static final int TYPE_AIRBRUSH = 2;
     public static final int TYPE_FOUNTAIN_PEN = 3;
+    public static final int TYPE_PAINTBRUSH = 4;
+    public static final int TYPE_ERASER = 5;
     
     public static final int SHAPE_CIRCLE = 0;
     public static final int SHAPE_SQUARE = 1;
 //    public static final int SHAPE_BITMAP_CIRCLE = 2;
     public static final int SHAPE_BITMAP_AIRBRUSH = 3;
     public static final int SHAPE_FOUNTAIN_PEN = 4;
+	
 
     private float mPressureExponent = 2.0f;
 
@@ -96,6 +99,8 @@ public class Slate extends View {
     private float mRadiusMax;
 
     int mDebugFlags = 0;
+    
+    private boolean erasing = false;
 
     private TiledBitmapCanvas mTiledCanvas;
     private final Paint mDebugPaints[] = new Paint[10];
@@ -211,8 +216,8 @@ public class Slate extends View {
             return mLastTool;
         }
 
-        public void setPenType(int shape) {
-            mRenderer.setPenType(shape);
+        public void setPenType(int shape, TPadBrushHandler sampler) {
+            mRenderer.setPenType(shape, sampler);
         }
     }
     
@@ -232,6 +237,8 @@ public class Slate extends View {
         
         private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         
+        final Resources res = getContext().getResources();
+        
         int mInkDensity = 0xff; // set to 0x20 or so for a felt-tip look, 0xff for traditional Markers
         
         public SmoothStroker() {
@@ -239,7 +246,7 @@ public class Slate extends View {
 
         public void setPenColor(int color) {
             mPenColor = color;
-            if (color == 0) {
+            if (color == 0 || erasing) {
                 // eraser: DST_OUT
                 mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
                 mPaint.setColor(Color.BLACK);
@@ -259,8 +266,9 @@ public class Slate extends View {
             return mPenColor;
         }
         
-        public void setPenType(int type) {
+        public void setPenType(int type, TPadBrushHandler sampler) {
             mPenType = type;
+            erasing = false;
             switch (type) {
             case TYPE_WHITEBOARD:
                 mShape = SHAPE_CIRCLE;
@@ -271,15 +279,30 @@ public class Slate extends View {
                 mInkDensity = 0x10;
                 break;
             case TYPE_AIRBRUSH:
+        		sampler.changeBrush(sampler.sandBrush);
                 mShape = SHAPE_BITMAP_AIRBRUSH;
                 mInkDensity = 0x80;
                 break;
             case TYPE_FOUNTAIN_PEN:
+                sampler.changeBrush(sampler.pen);
                 mShape = SHAPE_FOUNTAIN_PEN;
                 mInkDensity = 0xff;
                 break;
+            case TYPE_PAINTBRUSH:
+                sampler.changeBrush(sampler.defaultBrush);
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0x10;
+                break;
+            case TYPE_ERASER: 
+        		sampler.changeBrush(sampler.eraseBrush); 
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0xff;
+                erasing = true;
+                break;
             }
             setPenColor(mPenColor);
+            
+            
         }
         
         public int getPenType() {
@@ -333,6 +356,7 @@ public class Slate extends View {
                 break;
             }
             dirty.union(x-r, y-r, x+r, y+r);
+
         }
         
         private final RectF tmpDirtyRectF = new RectF();
@@ -510,6 +534,7 @@ public class Slate extends View {
             mDebugPaints[4].setARGB(255, 128, 128, 128);
         }
         this.sampler = new TPadBrushHandler(mTpad, this);
+
     }
 
     public boolean isEmpty() { return mEmpty; }
@@ -765,7 +790,7 @@ public class Slate extends View {
     
     public void setPenType(int shape) {
         for (MarkersPlotter plotter : mStrokes) {
-            plotter.setPenType(shape);
+            plotter.setPenType(shape, sampler);
         }
     }
     
@@ -850,6 +875,7 @@ public class Slate extends View {
     }
 
     private static final float[] mvals = new float[9];
+
     public static float getScale(Matrix m) {
         m.getValues(mvals);
         return mvals[0];
