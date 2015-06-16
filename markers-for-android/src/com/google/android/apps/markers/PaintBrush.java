@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class DefaultBrush extends Brush {
-	Slate slate;	
-	public DefaultBrush(Resources resources) {
+public class PaintBrush extends Brush {
+	Slate slate;
+	Boolean dabbed;
+	
+	public PaintBrush(Resources resources, Slate slate) {
 		super(resources);
 		// Brush settings	
 		// Length in number of event calls of a brush gesture 
@@ -20,6 +22,23 @@ public class DefaultBrush extends Brush {
 		this.generateWeights();
 		// The texture of the brush 
 		setDataBitmap(R.drawable.lines);
+		this.slate = slate;
+		dabbed = false;
+	}
+	
+	@Override
+	public void handleEvent(MotionEvent event) {
+			float f = getInkAmount();
+			int b;
+			if (f < 1.0 && f > 0.05) {
+				b = 16 - Math.round(f * 16);
+			}
+			else {
+				b = 0x01;
+			}
+			Log.d("b", "F value = " + b);
+			slate.mStrokes[0].mRenderer.mPaint.setAlpha(b);
+		super.handleEvent(event);
 	}
 	
 	/**
@@ -44,5 +63,19 @@ public class DefaultBrush extends Brush {
 		int range = max - min;
 		float ret = ((float) i) / ((float) range);  
 		return ret;
+	}
+	
+	public float getInkAmount() {
+		if (dabbed) {
+			if (this.gestureTracker < this.gestureWeights.length) {
+				return this.gestureWeights[this.gestureTracker];
+			}
+			else {
+				return this.gestureWeights[this.gestureWeights.length - 1];
+			}
+		}
+		else {
+			return 0f;
+		}
 	}
 }

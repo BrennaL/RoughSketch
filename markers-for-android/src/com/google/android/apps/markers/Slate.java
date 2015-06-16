@@ -133,19 +133,21 @@ public class Slate extends View {
     // TPad globals
     private TPad mTpad;
 	private TPadBrushHandler sampler;
+	
+	public MarkersPlotter[] mStrokes;
 
     public interface SlateListener {
         void strokeStarted();
         void strokeEnded();
     }
 
-    private class MarkersPlotter implements SpotFilter.Plotter {
+    public class MarkersPlotter implements SpotFilter.Plotter {
         // Plotter receives pointer coordinates and draws them.
         // It implements the necessary interface to receive filtered Spots from the SpotFilter.
         // It hands off the drawing command to the renderer.
         
         private SpotFilter mCoordBuffer;
-        private SmoothStroker mRenderer;
+        SmoothStroker mRenderer;
         
         private float mLastPressure = -1f;
         private int mLastTool = 0;
@@ -221,7 +223,7 @@ public class Slate extends View {
         }
     }
     
-    private class SmoothStroker {
+    class SmoothStroker {
         // The renderer. Given a stream of filtered points, converts it into draw calls.
         
         private float mLastX = 0, mLastY = 0, mLastLen = 0, mLastR = -1;
@@ -235,7 +237,7 @@ public class Slate extends View {
         private Path mWorkPath = new Path();
         private PathMeasure mWorkPathMeasure = new PathMeasure();
         
-        private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         
         final Resources res = getContext().getResources();
         
@@ -436,8 +438,6 @@ public class Slate extends View {
             return mLastR;
         }
     }
-
-    private MarkersPlotter[] mStrokes;
 
     Spot mTmpSpot = new Spot();
     
