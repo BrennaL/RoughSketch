@@ -19,21 +19,23 @@ public class TPadBrushHandler {
 	public Brush defaultBrush;
 	public Brush eraseBrush;
 	public Brush sandBrush;
+	public Brush fingerPaint;
 	public Brush pen;
 	
-	public TPadBrushHandler(TPad tPad, View view) {
+	public TPadBrushHandler(TPad tPad, Slate slate) {
 		this.tPad = tPad;
-		this.view = view;
+		this.view = slate;
 		this.resources = view.getResources();
-		
+		fingerPaint = new FingerPaintBrush(resources, slate);
 		defaultBrush = new DefaultBrush(resources);
 		sandBrush = new SandBrush(resources);
 		pen = new StaticPen(resources);
 		eraseBrush = new EraseBrush(resources); 
 		
 		currentBrush = defaultBrush;
-		
 	}
+	
+	
 	
 	public void changeBrush(Brush b) {
 		currentBrush = null;
