@@ -20,6 +20,9 @@ public class TPadZoomTouchHandler {
 	private Resources resources;
     VelocityTracker mVelocityTracker;
 
+    private boolean single_finger_last = true;
+    private double initial_distance = 0;
+
 	public TPadZoomTouchHandler(TPad tPad, View view) {
 		this.tPad = tPad;
 		this.view = view;
@@ -38,6 +41,7 @@ public class TPadZoomTouchHandler {
 
         if (event.getPointerCount() >1)
         {
+
             //Zoom, etc.
             MotionEvent.PointerCoords coords1 = new MotionEvent.PointerCoords();
             MotionEvent.PointerCoords coords2 = new MotionEvent.PointerCoords();
@@ -48,13 +52,26 @@ public class TPadZoomTouchHandler {
             float dx = coords1.x - coords2.x;
             float dy = coords1.y - coords2.y;
 
-            double distance_squared = dx*dx + dy*dy;
+            double distance = Math.sqrt(dx*dx + dy*dy);
 
-            friction = 1.0f - (float) Math.max(0, Math.min( (distance_squared-4000) / 400000.0, 1));
+            if (single_finger_last)
+            {
+                //friction is relative to initial distance
+                initial_distance = distance;
+                friction = 0.8f;
+            } else {
+
+                double distance_squared = (distance - initial_distance)*(distance-initial_distance);
+                friction = 0.8f - 0.8f*(float) Math.max(0, Math.min( (distance_squared) / 50000.0, 1));
+            }
+
+            single_finger_last = false;
 
         } else {
             //not zoom, mimic friction
 
+
+            single_finger_last = true;
             //Handy Velocity calculator
             //retrieved from:
             //https://developer.android.com/reference/android/support/v4/view/VelocityTrackerCompat.html
@@ -80,13 +97,28 @@ public class TPadZoomTouchHandler {
                     // computeCurrentVelocity(). Then call getXVelocity()
                     // and getYVelocity() to retrieve the velocity for each pointer ID.
                     mVelocityTracker.computeCurrentVelocity(1000);
-//                    double velocity = Math.sqrt(
-//                            mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
-//                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0));
-                    double velocity_squared =  mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
-                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0);
+
+                    //VELOCITY CALCULATION
+
+                    double velocity = Math.sqrt(
+                            mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
+                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0));
 //                    friction = 0.5f*(float)Math.min(Math.max(0, (velocity-250)/1000.0),1);
-                    friction = 0.75f*(float)Math.min(Math.max(0, (velocity_squared-1000)/200000.0),1);
+
+                    //VELOCITY SQUARED CALCULATION
+//                    double velocity_squared =  mVelocityTracker.getXVelocity(0)*mVelocityTracker.getXVelocity(0)+
+//                                    mVelocityTracker.getYVelocity(0)*mVelocityTracker.getYVelocity(0);
+//                    friction = 0.75f*(float)Math.min(Math.max(0, (velocity_squared-1000)/200000.0),1);
+
+                    //VELOCITY SINGLE SINE CALCULATION
+                    double MAX_VELOCITY = 1000;
+                    //clamp velocity
+                    velocity = Math.min(Math.max(0, velocity), MAX_VELOCITY);
+                    //convert from domain [0, MAX_VELOCITY] to range [-PI/2, PI/2] for sigmoid-like shape
+                    double velocity_sine = Math.sin(velocity/MAX_VELOCITY*Math.PI - Math.PI/2);
+                    //shift to range [0, 1]
+                    velocity_sine = velocity_sine/2 + 0.5;
+                    friction = 0.5f*(float)velocity_sine;
 
                     break;
                 case MotionEvent.ACTION_UP:
