@@ -19,6 +19,7 @@ public class TPadBrushHandler {
 	public Brush defaultBrush;
 	public Brush eraseBrush;
 	public Brush sandBrush;
+	public Brush fingerPaint;
 	public Brush pen;
 	
 	public TPadBrushHandler(TPad tPad, Slate slate) {
@@ -30,10 +31,10 @@ public class TPadBrushHandler {
 		sandBrush = new SandBrush(resources);
 		pen = new StaticPen(resources);
 		eraseBrush = new EraseBrush(resources); 
-		
 		currentBrush = defaultBrush;
-		
 	}
+	
+	
 	
 	public void changeBrush(Brush b) {
 		currentBrush = null;
