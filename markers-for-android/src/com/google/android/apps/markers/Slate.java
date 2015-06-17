@@ -134,6 +134,9 @@ public class Slate extends View {
     private TPad mTpad;
 	private TPadBrushHandler sampler;
 
+    //Zoom handling
+    ZoomTouchView mZoomView;
+
     public interface SlateListener {
         void strokeStarted();
         void strokeEnded();
@@ -452,7 +455,11 @@ public class Slate extends View {
     public Slate(Context c, TPad t) {
     	super(c);
     	setTpad(t);
-    	init();
+        init();
+    }
+
+    public void setZoomView(ZoomTouchView zoomView) {
+        mZoomView = zoomView;
     }
 
     @SuppressLint("NewApi")
@@ -955,6 +962,21 @@ public class Slate extends View {
         // starting a new touch? commit the previous state of the canvas
         if (action == MotionEvent.ACTION_DOWN) {
             commitStroke();
+        }
+
+        if (P >= 2)
+        {
+            for (int j = 0; j < P; j++) {
+                mStrokes[event.getPointerId(j)].finish(time);
+            }
+            dbgX = dbgY = -1;
+
+            setZoomMode(true);
+            if (mZoomView != null) {
+                mZoomView.setEnabled(true);
+                return mZoomView.onTouchEvent(event);
+            }
+
         }
 
         if (mZoomMode) {

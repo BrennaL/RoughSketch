@@ -237,12 +237,14 @@ public class MarkersActivity extends Activity
                 mJustLoadedImage = false;
             }
         }
-			
+
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
         root.addView(mSlate, 0);
         mZoomView = new ZoomTouchView(this, mTpad);
         mZoomView.setSlate(mSlate);
         mZoomView.setEnabled(false);
+
+        mSlate.setZoomView(mZoomView);
         
         if (hasAnimations()) {
             mZoomView.setAlpha(0);

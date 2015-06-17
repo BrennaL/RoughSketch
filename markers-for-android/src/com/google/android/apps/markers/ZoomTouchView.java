@@ -148,6 +148,16 @@ public class ZoomTouchView extends View {
                     }
                 } else if (action == MotionEvent.ACTION_POINTER_DOWN) {
                     mTouchTime = 0; // no double-tap for other fingers
+                } else if (action == MotionEvent.ACTION_POINTER_UP || action == MotionEvent.ACTION_UP)
+                {
+                    if (event.getPointerCount() <= 2)
+                    {
+                        if(mSlate != null)
+                        {
+                            mSlate.setZoomMode(false);
+                            setEnabled(false);
+                        }
+                    }
                 }
             } else if (action == MotionEvent.ACTION_MOVE) {
                 if (mTouchPoint[0] < 0) {
