@@ -389,10 +389,11 @@ public class MarkersActivity extends Activity
         final ToolButton penThinButton = (ToolButton) findViewById(R.id.pen_thin);
         penThinButton.setCallback(toolCB);
 
-        final ToolButton penMediumButton = (ToolButton) findViewById(R.id.pen_medium);
-        if (penMediumButton != null) {
-            penMediumButton.setCallback(toolCB);
-        }
+        // TODO 
+//        final ToolButton penMediumButton = (ToolButton) findViewById(R.id.pen_medium);
+//        if (penMediumButton != null) {
+//            penMediumButton.setCallback(toolCB);
+//        }
         
         final ToolButton penThickButton = (ToolButton) findViewById(R.id.pen_thick);
         penThickButton.setCallback(toolCB);
@@ -426,6 +427,11 @@ public class MarkersActivity extends Activity
         final ToolButton typeEraserButton = (ToolButton) findViewById(R.id.eraser);
         if (typeEraserButton != null) {
             typeEraserButton.setCallback(toolCB);
+        }
+        
+        final ToolButton typeAirBrushButton = (ToolButton) findViewById(R.id.airbrush_marker);
+        if (typeAirBrushButton != null) {
+        	typeAirBrushButton.setCallback(toolCB);
         }
         
         mLastPenType = mActivePenType = typeFountainPenButton;

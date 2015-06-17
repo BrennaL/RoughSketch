@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <view
+        android:id="@+id/airbrush_marker1"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="1dp"
+        android:tag="type_airbrush"
+        app:penType="airbrush" />
+
+    <view
+        android:id="@+id/airbrush_marker2"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="1dp"
+        android:tag="type_airbrush"
+        app:penType="airbrush" />
+
+    <view
+        android:id="@+id/airbrush_marker3"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="1dp"
+        android:tag="type_airbrush"
+        app:penType="airbrush" />
+
+</LinearLayout>
