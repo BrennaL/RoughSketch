@@ -84,7 +84,8 @@ public class Slate extends View {
     public static final int TYPE_AIRBRUSH = 2;
     public static final int TYPE_FOUNTAIN_PEN = 3;
     public static final int TYPE_PAINTBRUSH = 4;
-    public static final int TYPE_ERASER = 5;
+    public static final int TYPE_SIZETOALPHABRUSH = 5;
+    public static final int TYPE_ERASER = 6;
     
     public static final int SHAPE_CIRCLE = 0;
     public static final int SHAPE_SQUARE = 1;
@@ -252,7 +253,8 @@ public class Slate extends View {
                 // eraser: DST_OUT
                 mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
                 mPaint.setColor(Color.BLACK);
-            } else {
+            }
+            else {
                 mPaint.setXfermode(null);
                 
                 //mPaint.setColor(color); 
@@ -291,9 +293,14 @@ public class Slate extends View {
                 mInkDensity = 0xff;
                 break;
             case TYPE_PAINTBRUSH:
-                sampler.changeBrush(sampler.fingerPaint);//TODO add brush officially or whatevs
+                sampler.changeBrush(sampler.paintBrush);//TODO add brush officially or whatevs
                 mShape = SHAPE_CIRCLE; 
-                mInkDensity = 0x10;
+                mInkDensity = 0x76;
+                break;
+            case TYPE_SIZETOALPHABRUSH:
+                sampler.changeBrush(sampler.sizeToAlphaBrush);
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0x76;
                 break;
             case TYPE_ERASER: 
         		sampler.changeBrush(sampler.eraseBrush); 
@@ -302,9 +309,7 @@ public class Slate extends View {
                 erasing = true;
                 break;
             }
-            setPenColor(mPenColor);
-            
-            
+            setPenColor(mPenColor);           
         }
         
         public int getPenType() {
@@ -786,6 +791,10 @@ public class Slate extends View {
         for (MarkersPlotter plotter : mStrokes) {
             // XXX: todo: only do this if the stroke hasn't begun already
             // ...or not; the current behavior allows RAINBOW MODE!!!1!
+        	if (sampler.currentBrush instanceof PaintBrush) {
+        		PaintBrush p = (PaintBrush) sampler.currentBrush;
+        		p.gestureTracker = 0;
+        	}
             plotter.setPenColor(color);
         }
     }

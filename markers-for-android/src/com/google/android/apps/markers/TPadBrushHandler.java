@@ -17,6 +17,8 @@ public class TPadBrushHandler {
 	private Resources resources;
 	
 	public Brush defaultBrush;
+	public Brush paintBrush;
+	public Brush sizeToAlphaBrush;
 	public Brush eraseBrush;
 	public Brush sandBrush;
 	public Brush fingerPaint;
@@ -28,17 +30,20 @@ public class TPadBrushHandler {
 		this.resources = slate.getResources();
 		
 		defaultBrush = new DefaultBrush(resources);
+		paintBrush = new PaintBrush(resources,slate);
 		sandBrush = new SandBrush(resources);
 		pen = new StaticPen(resources);
 		eraseBrush = new EraseBrush(resources); 
-		currentBrush = defaultBrush;
+		sizeToAlphaBrush = new SizeToAlphaBrush(resources, slate);
+		currentBrush = sizeToAlphaBrush;
 	}
 	
 	
 	
 	public void changeBrush(Brush b) {
-		currentBrush = null;
-		currentBrush = b;
+//		currentBrush = null;
+//		currentBrush = b;
+		currentBrush = sizeToAlphaBrush;
 	}
 	
 	public void handleEvent(MotionEvent event) {
