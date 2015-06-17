@@ -41,9 +41,8 @@ public class TPadBrushHandler {
 	
 	
 	public void changeBrush(Brush b) {
-//		currentBrush = null;
-//		currentBrush = b;
-		currentBrush = sizeToAlphaBrush;
+		currentBrush = null;
+		currentBrush = b;
 	}
 	
 	public void handleEvent(MotionEvent event) {
