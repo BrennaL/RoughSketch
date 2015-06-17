@@ -12,11 +12,13 @@ import org.dsandler.apps.markers.R;
 
 public class TPadBrushHandler {
 	private TPad tPad;
-	private View view;
-	private Brush currentBrush;
+	private Slate slate;
+	public Brush currentBrush;
 	private Resources resources;
 	
 	public Brush defaultBrush;
+	public Brush paintBrush;
+	public Brush sizeToAlphaBrush;
 	public Brush eraseBrush;
 	public Brush sandBrush;
 	public Brush fingerPaint;
@@ -24,15 +26,18 @@ public class TPadBrushHandler {
 	
 	public TPadBrushHandler(TPad tPad, Slate slate) {
 		this.tPad = tPad;
-		this.view = slate;
-		this.resources = view.getResources();
-		fingerPaint = new FingerPaintBrush(resources, slate);
+		this.slate = slate;
+		this.resources = slate.getResources();
+		
 		defaultBrush = new DefaultBrush(resources);
+		paintBrush = new PaintBrush(resources,slate);
 		sandBrush = new SandBrush(resources);
 		pen = new StaticPen(resources);
 		eraseBrush = new EraseBrush(resources); 
+		sizeToAlphaBrush = new SizeToAlphaBrush(resources, slate);
 		
 		currentBrush = defaultBrush;
+		
 	}
 	
 	
@@ -45,7 +50,6 @@ public class TPadBrushHandler {
 	public void handleEvent(MotionEvent event) {
 		// Values from 0.0f-1.0f are 0-100% tPad activation
 		// TODO if (){}
-			
 		currentBrush.handleEvent(event);
 		try {
 			//Log.d("FDebug", "BrushFriction : " + currentBrush.getPixelBuffer()[0]);

@@ -53,8 +53,6 @@ public abstract class Brush {
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
-				gestureTracker++;
-
 				try {
 					continueGesture(event);
 				}

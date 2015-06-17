@@ -1,14 +1,16 @@
 package com.google.android.apps.markers;
 
 import org.dsandler.apps.markers.R;
+
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 public class DefaultBrush extends Brush {
-	
+	Slate slate;	
 	public DefaultBrush(Resources resources) {
 		super(resources);
-
 		// Brush settings	
 		// Length in number of event calls of a brush gesture 
 		super.gestureLength = 120;
@@ -19,6 +21,7 @@ public class DefaultBrush extends Brush {
 		// The texture of the brush 
 		setDataBitmap(R.drawable.lines);
 	}
+	
 	/**
 	 * Weight generating function.
 	 */

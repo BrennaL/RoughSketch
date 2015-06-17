@@ -84,7 +84,8 @@ public class Slate extends View {
     public static final int TYPE_AIRBRUSH = 2;
     public static final int TYPE_FOUNTAIN_PEN = 3;
     public static final int TYPE_PAINTBRUSH = 4;
-    public static final int TYPE_ERASER = 5;
+    public static final int TYPE_SIZETOALPHABRUSH = 5;
+    public static final int TYPE_ERASER = 6;
     
     public static final int SHAPE_CIRCLE = 0;
     public static final int SHAPE_SQUARE = 1;
@@ -133,19 +134,21 @@ public class Slate extends View {
     // TPad globals
     private TPad mTpad;
 	private TPadBrushHandler sampler;
+	
+	public MarkersPlotter[] mStrokes;
 
     public interface SlateListener {
         void strokeStarted();
         void strokeEnded();
     }
 
-    private class MarkersPlotter implements SpotFilter.Plotter {
+    public class MarkersPlotter implements SpotFilter.Plotter {
         // Plotter receives pointer coordinates and draws them.
         // It implements the necessary interface to receive filtered Spots from the SpotFilter.
         // It hands off the drawing command to the renderer.
         
         private SpotFilter mCoordBuffer;
-        private SmoothStroker mRenderer;
+        SmoothStroker mRenderer;
         
         private float mLastPressure = -1f;
         private int mLastTool = 0;
@@ -221,7 +224,7 @@ public class Slate extends View {
         }
     }
     
-    private class SmoothStroker {
+    class SmoothStroker {
         // The renderer. Given a stream of filtered points, converts it into draw calls.
         
         private float mLastX = 0, mLastY = 0, mLastLen = 0, mLastR = -1;
@@ -235,7 +238,7 @@ public class Slate extends View {
         private Path mWorkPath = new Path();
         private PathMeasure mWorkPathMeasure = new PathMeasure();
         
-        private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         
         final Resources res = getContext().getResources();
         
@@ -250,7 +253,8 @@ public class Slate extends View {
                 // eraser: DST_OUT
                 mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
                 mPaint.setColor(Color.BLACK);
-            } else {
+            }
+            else {
                 mPaint.setXfermode(null);
                 
                 //mPaint.setColor(color); 
@@ -289,9 +293,14 @@ public class Slate extends View {
                 mInkDensity = 0xff;
                 break;
             case TYPE_PAINTBRUSH:
-                sampler.changeBrush(sampler.fingerPaint);//TODO add brush officially or whatevs
+                sampler.changeBrush(sampler.paintBrush);//TODO add brush officially or whatevs
                 mShape = SHAPE_CIRCLE; 
-                mInkDensity = 0x10;
+                mInkDensity = 0x76;
+                break;
+            case TYPE_SIZETOALPHABRUSH:
+                sampler.changeBrush(sampler.sizeToAlphaBrush);
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0x76;
                 break;
             case TYPE_ERASER: 
         		sampler.changeBrush(sampler.eraseBrush); 
@@ -300,9 +309,7 @@ public class Slate extends View {
                 erasing = true;
                 break;
             }
-            setPenColor(mPenColor);
-            
-            
+            setPenColor(mPenColor);           
         }
         
         public int getPenType() {
@@ -436,8 +443,6 @@ public class Slate extends View {
             return mLastR;
         }
     }
-
-    private MarkersPlotter[] mStrokes;
 
     Spot mTmpSpot = new Spot();
     
@@ -786,6 +791,10 @@ public class Slate extends View {
         for (MarkersPlotter plotter : mStrokes) {
             // XXX: todo: only do this if the stroke hasn't begun already
             // ...or not; the current behavior allows RAINBOW MODE!!!1!
+        	if (sampler.currentBrush instanceof PaintBrush) {
+        		PaintBrush p = (PaintBrush) sampler.currentBrush;
+        		p.gestureTracker = 0;
+        	}
             plotter.setPenColor(color);
         }
     }
