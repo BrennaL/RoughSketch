@@ -20,26 +20,31 @@ public class TPadBrushHandler {
 	public Brush eraseBrush;
 	public Brush sandBrush;
 	public Brush fingerPaint;
+	public Brush fingerFeel;
 	public Brush pen;
 	
 	public TPadBrushHandler(TPad tPad, Slate slate) {
 		this.tPad = tPad;
 		this.view = slate;
 		this.resources = view.getResources();
+		
 		fingerPaint = new FingerPaintBrush(resources, slate);
+		fingerFeel = new FingerFeelBrush(resources, slate);
 		defaultBrush = new DefaultBrush(resources);
 		sandBrush = new SandBrush(resources);
 		pen = new StaticPen(resources);
-		eraseBrush = new EraseBrush(resources); 
-		
-		currentBrush = defaultBrush;
+		eraseBrush = new EraseBrush(resources);
+	
+		currentBrush = fingerFeel;
 	}
 	
 	
 	
 	public void changeBrush(Brush b) {
+		currentBrush.brushOff();
 		currentBrush = null;
 		currentBrush = b;
+		currentBrush.brushOn();
 	}
 	
 	public void handleEvent(MotionEvent event) {
