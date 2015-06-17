@@ -262,4 +262,10 @@ public abstract class Brush {
 		dataBitmap = null;
 		dataBitmap = imageWithBG.copy(Bitmap.Config.ARGB_8888, true);
 	}
+
+	public void brushOff() {		
+	}
+
+	public void brushOn() {	
+	}
 }

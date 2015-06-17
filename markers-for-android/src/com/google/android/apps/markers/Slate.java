@@ -101,6 +101,7 @@ public class Slate extends View {
     int mDebugFlags = 0;
     
     private boolean erasing = false;
+    public boolean stopDrawing = false;
 
     private TiledBitmapCanvas mTiledCanvas;
     private final Paint mDebugPaints[] = new Paint[10];
@@ -945,6 +946,11 @@ public class Slate extends View {
     @SuppressLint("NewApi")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        // Call the TPad after all drawing has been calculated
+        onTouchEventTPad(event);
+        if (stopDrawing) {
+        	return true;
+        }
         final int action = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
                 ? event.getActionMasked()
                 : event.getAction();
@@ -1041,8 +1047,6 @@ public class Slate extends View {
             }
             dbgX = dbgY = -1;
         }
-        // Call the TPad after all drawing has been calculated
-        onTouchEventTPad(event);
         return true;
     }
   
