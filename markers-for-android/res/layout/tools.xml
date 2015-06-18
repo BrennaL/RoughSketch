@@ -26,11 +26,13 @@
     <!-- zoomer -->
 
     <ToggleButton
-        android:id="@+id/toggleButton1"
+        android:id="@+id/TpadOnOff"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="ToggleButton" />
+        android:textOn="OFF"
+        android:textOff="ON"
+ 	 />
 
     <view
         class="com.google.android.apps.markers.ToolButton$ZoomToolButton"

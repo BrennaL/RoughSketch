@@ -203,7 +203,6 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
             super.onAttachedToWindow();
             if (penType == Slate.TYPE_AIRBRUSH) {
                 icon = BitmapFactory.decodeResource(getResources(), R.drawable.airbrush_dark);
-                //TODO//
                 if (icon == null) {
                     throw new RuntimeException("PenTypeButton: could not load airbrush bitmap");
                 }
@@ -217,14 +216,14 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
             } else if (penType == Slate.TYPE_PAINTBRUSH) {
                 icon = BitmapFactory.decodeResource(getResources(), R.drawable.brush_new);
                 if (icon == null) {
-                    throw new RuntimeException("PenTypeButton: could not load fountainpen bitmap");
+                    throw new RuntimeException("PenTypeButton: could not load paint brush bitmap");
                 }
                 frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
             }
             else if (penType == Slate.TYPE_ERASER) {
                 icon = BitmapFactory.decodeResource(getResources(), R.drawable.eraser_new);
                 if (icon == null) {
-                    throw new RuntimeException("PenTypeButton: could not load fountainpen bitmap");
+                    throw new RuntimeException("PenTypeButton: could not load eraser bitmap");
                 }
                 frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
             }
@@ -396,6 +395,22 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
             return true;
         }
     }
+    
+//    public static class TpadOnOff extends ToolButton {
+//        public Bitmap icon;
+//        public Rect frame;
+//        public final RectF tmpRF = new RectF();
+//        
+//		public TpadOnOff(Context context, AttributeSet attrs, int defStyle) {
+//			super(context, attrs, defStyle);
+//			
+//            icon = BitmapFactory.decodeResource(getResources(), R.id.tpadOnOff);
+//            frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
+//			// TODO Auto-generated constructor stub
+//		}
+//    	
+//		
+//    }
 
     public static class ZoomToolButton extends ToolButton {
         public Bitmap icon;

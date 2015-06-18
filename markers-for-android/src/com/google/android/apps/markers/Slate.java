@@ -133,6 +133,7 @@ public class Slate extends View {
     // TPad globals
     private TPad mTpad;
 	private TPadBrushHandler sampler;
+	private boolean mTpadOnOff;
 
     public interface SlateListener {
         void strokeStarted();
@@ -1090,6 +1091,8 @@ public class Slate extends View {
     // BEGIN MERGE OF FrictionMapView FILE: 
 	// Called by creating activity to initialize the local TPad reference object
 	public void setTpad(TPad tpad) {
+		//TODO
+		mTpadOnOff = true;
 		try {
 			tpad.toString();
 		} catch (NullPointerException ex) {
@@ -1098,7 +1101,10 @@ public class Slate extends View {
 		}
 		this.mTpad = tpad;
 	}
-		
+	
+	public void TpadOff (){
+		mTpadOnOff = false;
+	}
 	 /**
      * Handles touch events for the TPad separate from the motion event.
      * @author : bucci
@@ -1107,7 +1113,7 @@ public class Slate extends View {
 	
     public boolean onTouchEventTPad(MotionEvent event) {
     	try {
-	    	sampler.handleEvent(event);
+	    	sampler.handleEvent(event, mTpadOnOff);
     	}
     	catch (Exception e) {
     		Log.d("FDebug", "motionEvent failed");

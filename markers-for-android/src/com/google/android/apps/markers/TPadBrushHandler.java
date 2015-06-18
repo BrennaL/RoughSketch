@@ -39,17 +39,21 @@ public class TPadBrushHandler {
 		currentBrush = b;
 	}
 	
-	public void handleEvent(MotionEvent event) {
+	public void handleEvent(MotionEvent event, boolean tpadOnOff) {
 		// Values from 0.0f-1.0f are 0-100% tPad activation
-		// TODO if (){}
-			
-		currentBrush.handleEvent(event);
-		try {
-			//Log.d("FDebug", "BrushFriction : " + currentBrush.getPixelBuffer()[0]);
-			tPad.sendFrictionBuffer(currentBrush.getPixelBuffer());
-		}
-		catch (Exception e) {
-			Log.d("FDebug", "Send friction buffer failed.");
+		// if the tpad is off, send 0 friction. 
+		System.out.println("the tpad is " + tpadOnOff);
+		if (!tpadOnOff)
+			tPad.turnOff();
+		else{
+			currentBrush.handleEvent(event);
+			try {
+				//Log.d("FDebug", "BrushFriction : " + currentBrush.getPixelBuffer()[0]);
+				tPad.sendFrictionBuffer(currentBrush.getPixelBuffer());
+			}
+			catch (Exception e) {
+				Log.d("FDebug", "Send friction buffer failed.");
+			}
 		}
 	}
 }

@@ -10,10 +10,9 @@ public class SandBrush extends Brush {
 		public SandBrush(Resources r) {		
 		super(r);
 
-		// Brush settings
-		
+		// Brush settings	
 		// Length in number of event calls of a brush gesture 
-		super.gestureLength = 120;
+		super.gestureLength = 10;
 		// Initialize the weight array to the length of a brush gesture
 		super.gestureWeights = new float[gestureLength];
 		// Apply the g(x) function, where x is events since beginning of gesture
@@ -25,7 +24,11 @@ public class SandBrush extends Brush {
 		@Override
 		protected void generateWeights() {
 			for (int i=0; i<super.gestureLength; i++) {
-				super.gestureWeights[i] = g(0,gestureLength,i);
+				if (i <= 2)
+					super.gestureWeights[i] = 0f;
+				else if( i > 2){
+					super.gestureWeights[i] = g(0,gestureLength,i);
+				}
 			}
 			Log.d("FDebug", "Generated default weights: ");
 			System.out.println("Hi!");
@@ -38,12 +41,10 @@ public class SandBrush extends Brush {
 		 */
 		private float g(int min, int max, int i) {
 			// Change this logic to define a new function.
-			//
+				int range = (max - i) - min;
+				float ret = ((float) i) / ((float) range);
+				return ret;
 			
-			int range = max - min;
-			//float ret = ((float) i) / ((float) range);  
-			float ret = ((float) i);
-			return ret;
 		}
 
 }
