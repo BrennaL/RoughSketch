@@ -1,34 +1,63 @@
 package com.google.android.apps.markers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import org.dsandler.apps.markers.R;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Color;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class DefaultBrush extends Brush {
-	Slate slate;	
-	public DefaultBrush(Resources resources) {
+public class FingerPaintBrush extends Brush {
+	Slate slate;
+	
+	public FingerPaintBrush(Resources resources, Slate slate) {
 		super(resources);
-		// Brush settings	
+		this.slate = slate;
+		// Brush settings
+		
 		// Length in number of event calls of a brush gesture 
-		super.gestureLength = 120;
+		super.gestureLength = 125;
 		// Initialize the weight array to the length of a brush gesture
 		super.gestureWeights = new float[gestureLength];
 		// Apply the g(x) function, where x is events since beginning of gesture
 		this.generateWeights();
-		// The texture of the brush 
+		// The texture of the brush, default to lines
 		setDataBitmap(R.drawable.lines);
 	}
+	public void takeScreenShot() {
+		Bitmap b = slate.copyBitmap(true);
+        File f = new File(Environment.getExternalStorageDirectory(),  "photo.jpg");
+        try {
+        	b.compress(CompressFormat.JPEG, 72, new FileOutputStream(f.getPath()));
+        }
+        catch (Exception e) {
+        	Log.d("TPad debug","Couldn't write file.");
+        }
+        setDataBitmap(b);
+	}
 	
+
+	@Override
+	public void handleEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_UP || super.gestureTracker % 25 == 0) {
+			takeScreenShot();
+		}
+		super.handleEvent(event);
+	}
 	/**
 	 * Weight generating function.
 	 */
 	@Override
 	protected void generateWeights() {
 		for (int i=0; i<super.gestureLength; i++) {
-			super.gestureWeights[i] = g(0,gestureLength,i);
+			super.gestureWeights[i] = 1.0f;
 		}
 		Log.d("FDebug", "Generated default weights: ");
 		System.out.println("Hi!");

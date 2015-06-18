@@ -45,6 +45,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -64,7 +65,10 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+<<<<<<< HEAD
 import android.widget.ToggleButton;
+=======
+>>>>>>> 9e335a1fbbebf9dcb573c618c95b2febecd03336
 import nxr.tpad.lib.TPad;
 import nxr.tpad.lib.TPadImpl;
 import nxr.tpad.lib.views.DepthMapView;
@@ -75,8 +79,11 @@ import android.graphics.BitmapFactory;
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 9e335a1fbbebf9dcb573c618c95b2febecd03336
 import org.dsandler.apps.markers.R;
 import org.dsandler.apps.markers.R.id;
 
@@ -960,6 +967,10 @@ public class MarkersActivity extends Activity
 
     public void setPenColor(int color) {
         mSlate.setPenColor(color);
+        Vibrator v = (Vibrator) this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(25);
+
     }
     
     public void setPenType(int type) {

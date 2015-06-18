@@ -3,6 +3,7 @@ package com.google.android.apps.markers;
 import nxr.tpad.lib.TPadService;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -52,8 +53,6 @@ public abstract class Brush {
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
-				gestureTracker++;
-
 				try {
 					continueGesture(event);
 				}
@@ -249,5 +248,22 @@ public abstract class Brush {
 		Bitmap bmp = BitmapFactory.decodeResource(resources, uri);
 		dataBitmap = null;
 		dataBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
+	}
+	public void setDataBitmap(Bitmap image) {
+		// Create new bitmap from a copy of the reference. This ensures the
+		// reference copy won't be used, and it can then be destroyed.
+		Bitmap imageWithBG = Bitmap.createBitmap(image.getWidth(), image.getHeight(),image.getConfig());  // Create another image the same size
+		imageWithBG.eraseColor(Color.WHITE);  // set its background to white, or whatever color you want
+		Canvas canvas = new Canvas(imageWithBG);  // create a canvas to draw on the new image
+		canvas.drawBitmap(image, 0f, 0f, null); // draw old image on the background
+		image.recycle();  // clear out old image 
+		dataBitmap = null;
+		dataBitmap = imageWithBG.copy(Bitmap.Config.ARGB_8888, true);
+	}
+
+	public void brushOff() {		
+	}
+
+	public void brushOn() {	
 	}
 }

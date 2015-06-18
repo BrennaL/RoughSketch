@@ -63,6 +63,7 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
 
     public ToolButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        
     }
     
     @Override
