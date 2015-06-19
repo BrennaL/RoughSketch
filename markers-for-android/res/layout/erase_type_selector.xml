@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <view
+        android:id="@+id/eraser1"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_eraser"
+        app:penType="eraser" />
+
+    <view
+        android:id="@+id/eraser2"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_eraser"
+        app:penType="eraser" />
+
+    <view
+        android:id="@+id/eraser3"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_eraser"
+        app:penType="eraser" />
+
+</LinearLayout>
