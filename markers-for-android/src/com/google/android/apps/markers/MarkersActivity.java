@@ -60,10 +60,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import nxr.tpad.lib.TPad;
 import nxr.tpad.lib.TPadImpl;
 import nxr.tpad.lib.views.DepthMapView;
@@ -72,9 +74,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 
-
-
 import org.dsandler.apps.markers.R;
+import org.dsandler.apps.markers.R.id;
 
 import com.google.android.apps.markers.ToolButton.SwatchButton;
 
@@ -390,10 +391,11 @@ public class MarkersActivity extends Activity
         final ToolButton penThinButton = (ToolButton) findViewById(R.id.pen_thin);
         penThinButton.setCallback(toolCB);
 
-        final ToolButton penMediumButton = (ToolButton) findViewById(R.id.pen_medium);
-        if (penMediumButton != null) {
-            penMediumButton.setCallback(toolCB);
-        }
+        // TODO 
+//        final ToolButton penMediumButton = (ToolButton) findViewById(R.id.pen_medium);
+//        if (penMediumButton != null) {
+//            penMediumButton.setCallback(toolCB);
+//        }
         
         final ToolButton penThickButton = (ToolButton) findViewById(R.id.pen_thick);
         penThickButton.setCallback(toolCB);
@@ -428,6 +430,27 @@ public class MarkersActivity extends Activity
         if (typeEraserButton != null) {
             typeEraserButton.setCallback(toolCB);
         }
+        
+        final ToolButton typeAirBrushButton = (ToolButton) findViewById(R.id.airbrush_marker);
+        if (typeAirBrushButton != null) {
+        	typeAirBrushButton.setCallback(toolCB);
+        }
+        
+        final ToggleButton tpadOnOff = (ToggleButton) findViewById(R.id.TpadOnOff);
+        tpadOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                	//mTpad.turnOff();
+                	mSlate.TpadOff();
+                    // The toggle is enabled
+                } else {
+                	//mTpad.turnOff();
+                    // The toggle is disabled
+                	mSlate.setTpad(mTpad);
+                }
+            }
+        });
+        
         
         mLastPenType = mActivePenType = typeFountainPenButton;
 
@@ -532,7 +555,7 @@ public class MarkersActivity extends Activity
         super.onStart();
         Intent startIntent = getIntent();
         String a = startIntent.getAction();
-        if (DEBUG) Log.d(TAG, "starting with intent=" + startIntent + " action=" + a + " extras=" + dumpBundle(startIntent.getExtras()));
+        if (DEBUG) Log.d(TAG, "starting wixth intent=" + startIntent + " action=" + a + " extras=" + dumpBundle(startIntent.getExtras()));
         if (a == null) return;
         if (a.equals(Intent.ACTION_EDIT)) {
             // XXX: what happens to the old drawing? we should really move to auto-save

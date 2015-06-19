@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <view
+        android:id="@+id/paintbrush_marker1"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_weight="0.00"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_paintbrush"
+        app:penType="paintbrush" />
+
+    <view
+        android:id="@+id/paintbrush_marker2"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_weight="0.00"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_paintbrush"
+        app:penType="paintbrush" />
+
+    <view
+        android:id="@+id/paintbrush_marker3"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_weight="0.00"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_paintbrush"
+        app:penType="paintbrush" />
+
+    <view
+        android:id="@+id/paintbrush_marker4"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_weight="0.00"
+        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+        android:padding="2dp"
+        android:tag="type_paintbrush"
+        app:penType="paintbrush" />
+
+</LinearLayout>
