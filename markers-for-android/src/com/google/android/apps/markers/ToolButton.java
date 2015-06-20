@@ -293,39 +293,36 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
         @Override
         public boolean onLongClick(View view) {
         	AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        	AlertDialog dlg;
         	switch (penType){
               	case Slate.TYPE_FOUNTAIN_PEN:
-        		//AlertDialog.Builder  builder = new AlertDialog.Builder(getContext());
-        		// TODO
-        		final View layout_pen =
-        				inflate(getContext(), R.layout.pen_type_selector, null);
-        		 		builder.setView(layout_pen);
-           			    AlertDialog dlg_pen =  builder.create();
-                        dlg_pen.show();
-        	case Slate.TYPE_PAINTBRUSH:
-        		//AlertDialog.Builder builder_paint = new AlertDialog.Builder(getContext());
-        		// TODO
-        		final View layout_paint =
-        				inflate(getContext(), R.layout.paint_type_selector, null);
-        		 		builder.setView(layout_paint);
-           			    AlertDialog dlg_paint =  builder.create();
-                        dlg_paint.show();
-        	case Slate.TYPE_ERASER:
-        		//AlertDialog.Builder builder_erase = new AlertDialog.Builder(getContext());
-        		// TODO
-        		final View layout_erase =
-        				inflate(getContext(), R.layout.erase_type_selector, null);
-        		 		builder.setView(layout_erase);
-           			    AlertDialog dlg_erase =  builder.create();
-                        dlg_erase.show();
-        	case Slate.TYPE_AIRBRUSH:
-        		//AlertDialog.Builder builder_airbrush = new AlertDialog.Builder(getContext());
-        		// TODO
-        		final View layout_airbrush =
-        				inflate(getContext(), R.layout.airbrush_type_selector, null);
-        		 		builder.setView(layout_airbrush);
-           			    AlertDialog dlg_airbrush =  builder.create();
-                        dlg_airbrush.show();
+	        		final View layout_pen =
+	        				inflate(getContext(), R.layout.pen_type_selector, null);
+	        		 		builder.setView(layout_pen);
+	           			    dlg =  builder.create();
+	                        dlg.show();
+	                        break;
+              	case Slate.TYPE_PAINTBRUSH:
+	        		final View layout_paint =
+	        				inflate(getContext(), R.layout.paint_type_selector, null);
+	        		 		builder.setView(layout_paint);
+	        		 		dlg =  builder.create();
+	                        dlg.show();
+	                        break;
+              	case Slate.TYPE_ERASER:
+	        		final View layout_erase =
+	        				inflate(getContext(), R.layout.erase_type_selector, null);
+	        		 		builder.setView(layout_erase);
+	           			    dlg =  builder.create();
+	                        dlg.show();
+	                        break;
+	        	case Slate.TYPE_AIRBRUSH:
+	        		final View layout_airbrush =
+	        				inflate(getContext(), R.layout.airbrush_type_selector, null);
+	        		 		builder.setView(layout_airbrush);
+	           			    dlg =  builder.create();
+	                        dlg.show();
+	                        break;
         	}
         return true;
         }
