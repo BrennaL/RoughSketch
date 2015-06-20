@@ -228,6 +228,13 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
                 }
                 frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
             }
+            else if (penType == Slate.TYPE_FINGERFEEL) {
+                icon = BitmapFactory.decodeResource(getResources(), R.drawable.fingerfeel);
+                if (icon == null) {
+                    throw new RuntimeException("PenTypeButton: could not load feelfinger bitmap");
+                }
+                frame = new Rect(0, 0, icon.getWidth(), icon.getHeight());
+            }
         }
         
         @Override
@@ -270,7 +277,6 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
                         canvas.drawBitmap(icon, frame, tmpRF, mPaint);
                     }
                     break;
-                case Slate.TYPE_WHITEBOARD:
                 case Slate.TYPE_PAINTBRUSH:
 					mPaint.setAlpha(0xFF);
 					if (icon != null) {
@@ -283,6 +289,18 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
 						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
 					}
 					break;
+                case Slate.TYPE_FINGERFEEL:
+					mPaint.setAlpha(0xFF);
+					if (icon != null) {
+						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
+					}
+					break;
+                case Slate.TYPE_SIZETOALPHABRUSH:
+					mPaint.setAlpha(0xFF);
+					if (icon != null) {
+						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
+					}
+					break;					
                 default:
                     mPaint.setAlpha(0xFF);
                     canvas.drawCircle(x, y, r, mPaint);
@@ -426,6 +444,7 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
             this(context, attrs, 0);
         }
         
+             
         @Override
         void activate() {
             super.activate();

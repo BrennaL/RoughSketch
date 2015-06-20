@@ -33,7 +33,7 @@
         android:textOn="OFF"
         android:textOff="ON"
  	 />
-
+	<!-- ZoomTool   -->
     <view
         class="com.google.android.apps.markers.ToolButton$ZoomToolButton"
         android:id="@+id/tool_zoom"
@@ -44,7 +44,11 @@
         android:layout_weight="1"
         android:layout_marginBottom="@dimen/tool_palette_gutter"
         />
-    <!-- felt tip pen -->
+    
+
+
+    
+    <!-- felt tip pen
     <view
         class="com.google.android.apps.markers.ToolButton$PenToolButton"
         android:id="@+id/pen_thin"
@@ -55,7 +59,9 @@
         android:layout_weight="1"
         markers:strokeWidthMin="2px"
         markers:strokeWidthMax="4px"
-        /> 
+        /> -->
+        
+        
     <!-- small brush 
     <view
         class="com.google.android.apps.markers.ToolButton$PenToolButton"
@@ -69,6 +75,8 @@
         markers:strokeWidthMax="10dp"
         /> -->
     <!-- large brush -->
+    
+    
     <view
         class="com.google.android.apps.markers.ToolButton$PenToolButton"
         android:id="@+id/pen_thick"
@@ -130,7 +138,19 @@
            android:layout_weight="1"
            markers:penType="airbrush"
            /> -->
-
+           
+    <!--  FeelFinger -->
+    
+	    <view
+	        android:id="@+id/fingerfeel"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
+	        android:padding="2dp"
+	        android:layout_weight="1"
+	        android:tag="type_fingerfeel"
+	        markers:penType="fingerfeel" />
+		
 		<view
 		    android:id="@+id/eraser"
 		    android:layout_width="match_parent"
@@ -171,5 +191,7 @@
            android:layout_weight="1"
            markers:penType="airbrush"            
           />
+	    
+	    
     </LinearLayout>
 </LinearLayout>

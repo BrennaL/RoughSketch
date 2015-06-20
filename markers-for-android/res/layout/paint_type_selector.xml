@@ -22,26 +22,7 @@
         class="com.google.android.apps.markers.ToolButton$PenTypeButton"
         android:padding="2dp"
         android:tag="type_paintbrush"
-        app:penType="paintbrush" />
+        app:penType="sizetoalphabrush" />
 
-    <view
-        android:id="@+id/paintbrush_marker3"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:layout_weight="0.00"
-        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
-        android:padding="2dp"
-        android:tag="type_paintbrush"
-        app:penType="paintbrush" />
-
-    <view
-        android:id="@+id/paintbrush_marker4"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:layout_weight="0.00"
-        class="com.google.android.apps.markers.ToolButton$PenTypeButton"
-        android:padding="2dp"
-        android:tag="type_paintbrush"
-        app:penType="paintbrush" />
 
 </LinearLayout>
