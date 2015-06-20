@@ -85,8 +85,8 @@ public class Slate extends View {
     public static final int TYPE_FOUNTAIN_PEN = 3;
     public static final int TYPE_PAINTBRUSH = 4;
     public static final int TYPE_ERASER = 5;
-    public static final int TYPE_SIZETOALPHABRUSH = 6;
-
+    public static final int TYPE_FINGERFEEL = 6;
+    public static final int TYPE_SIZETOALPHABRUSH = 7;
     
     public static final int SHAPE_CIRCLE = 0;
     public static final int SHAPE_SQUARE = 1;
@@ -312,6 +312,12 @@ public class Slate extends View {
                 mInkDensity = 0xff;
                 erasing = true;
                 break;
+            case TYPE_FINGERFEEL: 
+        		sampler.changeBrush(sampler.fingerFeel); 
+                mShape = SHAPE_CIRCLE; 
+                mInkDensity = 0xff;
+                erasing = true;
+                break;               
             }
             setPenColor(mPenColor);           
         }

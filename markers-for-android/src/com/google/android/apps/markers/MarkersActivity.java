@@ -388,8 +388,8 @@ public class MarkersActivity extends Activity
         final ToolButton zoomButton = (ToolButton) findViewById(R.id.tool_zoom);
         zoomButton.setCallback(toolCB);
 
-        final ToolButton penThinButton = (ToolButton) findViewById(R.id.pen_thin);
-        penThinButton.setCallback(toolCB);
+//        final ToolButton penThinButton = (ToolButton) findViewById(R.id.pen_thin);
+//        penThinButton.setCallback(toolCB);
 
         // TODO 
 //        final ToolButton penMediumButton = (ToolButton) findViewById(R.id.pen_medium);
@@ -436,6 +436,16 @@ public class MarkersActivity extends Activity
         	typeAirBrushButton.setCallback(toolCB);
         }
         
+        final ToolButton typeFeelFinger = (ToolButton) findViewById(R.id.fingerfeel);
+        if (typeFeelFinger != null) {
+        	typeFeelFinger.setCallback(toolCB);
+        }
+        
+        final ToolButton typeAlphaPaint = (ToolButton) findViewById(R.id.paintbrush_marker1);
+        if (typeAlphaPaint != null) {
+        	typeAlphaPaint.setCallback(toolCB);
+        }
+        
         final ToggleButton tpadOnOff = (ToggleButton) findViewById(R.id.TpadOnOff);
         tpadOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -474,9 +484,9 @@ public class MarkersActivity extends Activity
         if (mActiveTool == null) {
             mActiveTool = (ToolButton) mToolsView.findViewById(R.id.pen_thick);
         }
-        if (mActiveTool == null) {
-            mActiveTool = (ToolButton) mToolsView.findViewById(R.id.pen_thin);
-        }
+//        if (mActiveTool == null) {
+//            mActiveTool = (ToolButton) mToolsView.findViewById(R.id.pen_thin);
+//        }
         mLastTool = mActiveTool;
         if (mActiveTool != null) mActiveTool.click();
 
