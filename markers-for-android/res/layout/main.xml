@@ -34,7 +34,7 @@
     
     <com.google.android.apps.markers.LogoView
         android:id="@+id/logo"
-        android:src="@drawable/markers"
+        android:src="@drawable/roughsketch_logo_360"
         android:layout_width="@dimen/action_bar_logo_width"
         android:layout_height="@dimen/action_bar_height"
         android:padding="2dp"

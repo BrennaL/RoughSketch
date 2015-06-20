@@ -11,7 +11,7 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/large_launcher_icon" />
+        android:src="@drawable/roughsketch_logo_360" />
 
     <TextView
         android:id="@+id/title"
