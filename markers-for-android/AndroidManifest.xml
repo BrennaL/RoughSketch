@@ -23,7 +23,7 @@
     <!-- Support any Android device with a pointer -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
-    <application android:label="@string/app_name" android:icon="@drawable/launcher_icon" android:largeHeap="true" android:hardwareAccelerated="true">
+    <application android:label="@string/app_name" android:icon="@drawable/roughsketch_logo_360" android:largeHeap="true" android:hardwareAccelerated="true">
         <activity android:name="com.google.android.apps.markers.MarkersActivity" android:label="@string/app_name" android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
