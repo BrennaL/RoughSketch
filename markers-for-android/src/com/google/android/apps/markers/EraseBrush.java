@@ -18,7 +18,7 @@ public class EraseBrush extends Brush {
 		// Apply the g(x) function, where x is events since beginning of gesture
 		this.generateWeights();
 		// The texture of the brush 
-		setDataBitmap(R.drawable.greyblack);
+		setDataBitmap(R.drawable.blacknwhite);
 	}
 	/**
 	 * Weight generating function.
