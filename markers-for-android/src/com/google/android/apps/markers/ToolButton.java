@@ -289,6 +289,18 @@ public class ToolButton extends View implements View.OnLongClickListener, View.O
 						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
 					}
 					break;
+                case Slate.TYPE_FINGERFEEL:
+					mPaint.setAlpha(0xFF);
+					if (icon != null) {
+						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
+					}
+					break;
+                case Slate.TYPE_SIZETOALPHABRUSH:
+					mPaint.setAlpha(0xFF);
+					if (icon != null) {
+						canvas.drawBitmap(icon, frame, tmpRF, mPaint);
+					}
+					break;					
                 default:
                     mPaint.setAlpha(0xFF);
                     canvas.drawCircle(x, y, r, mPaint);
